@@ -1,6 +1,9 @@
 package cn.seangogo.modules.system.domain;
 
+import cn.seangogo.jpa.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,16 +20,11 @@ import java.util.Set;
  * @author jie
  * @date 2018-11-22
  */
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "role")
-@Getter
-@Setter
-public class Role implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = {Update.class})
-    private Long id;
+@Data
+public class Role extends BaseEntity<Long> {
 
     @Column(nullable = false)
     @NotBlank
@@ -54,20 +52,4 @@ public class Role implements Serializable {
     @ManyToMany
     @JoinTable(name = "roles_depts", joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "dept_id",referencedColumnName = "id")})
     private Set<Dept> depts;
-
-    @CreationTimestamp
-    @Column(name = "create_time")
-    private Timestamp createTime;
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", remark='" + remark + '\'' +
-                ", createDateTime=" + createTime +
-                '}';
-    }
-
-    public interface Update{}
 }

@@ -1,17 +1,20 @@
 package cn.seangogo.modules.system.domain;
 
+import cn.seangogo.jpa.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
+
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
  * @author jie
@@ -20,64 +23,89 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name="user")
-public class User implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = Update.class)
-    private Long id;
-
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "user")
+@Where(clause = "del_flag = 0")
+public class User extends BaseEntity<Long> {
+    /**
+     * 登陆名
+     */
     @NotBlank
     @Column(unique = true)
     private String username;
 
+    /**
+     * 真实名称
+     */
+    private String realName;
+
+    /**
+     * 昵称
+     */
+    private String nickname;
+
+    /**
+     * 性别 false = 女  true = 男
+     */
+    private boolean sex;
+
+    /**
+     * 头像
+     */
     private String avatar;
 
+    /**
+     * 邮箱
+     */
     @NotBlank
-    @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}",message = "格式错误")
+    @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}", message = "格式错误")
     private String email;
 
+    /**
+     * 手机
+     */
     @NotBlank
     private String phone;
 
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 最后修改密码时间
+     */
+    private Date lastPasswordResetTime;
+
+    /**
+     * 激活
+     */
     @NotNull
     private Boolean enabled;
 
-    private String password;
+    /**
+     * 锁定
+     */
+    private boolean locked;
 
-    @CreationTimestamp
-    @Column(name = "create_time")
-    private Timestamp createTime;
+    /**
+     * 过期时间 3年
+     */
+    @Temporal(TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date expireTime = new Date(System.currentTimeMillis() + 86400000000L);
 
-    @Column(name = "last_password_reset_time")
-    private Date lastPasswordResetTime;
+    /**
+     * 账户锁定次数，最多5次进入锁定
+     */
+    private int accountLockCount = 0;
 
     @ManyToMany
-    @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
-
-    @OneToOne
-    @JoinColumn(name = "job_id")
-    private Job job;
 
     @OneToOne
     @JoinColumn(name = "dept_id")
     private Dept dept;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", email='" + email + '\'' +
-                ", enabled=" + enabled +
-                ", password='" + password + '\'' +
-                ", createTime=" + createTime +
-                ", lastPasswordResetTime=" + lastPasswordResetTime +
-                '}';
-    }
-
-    public @interface Update {}
 }

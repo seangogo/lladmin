@@ -2,8 +2,6 @@ package cn.seangogo.rest;
 
 import cn.seangogo.domain.GenConfig;
 import cn.seangogo.service.GenConfigService;
-import cn.seangogo.domain.GenConfig;
-import cn.seangogo.service.GenConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
