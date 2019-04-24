@@ -59,7 +59,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 Optional.ofNullable(user.getJob()).map(Job::getName).orElse(null),
                 permissionService.mapToGrantedAuthorities(user),
                 user.getEnabled(),
-                user.getCreateTime(),
+                user.getCreatedDate(),
                 user.getLastPasswordResetTime()
         );
     }

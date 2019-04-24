@@ -108,4 +108,8 @@ public class User extends BaseEntity<Long> {
     @JoinColumn(name = "dept_id")
     private Dept dept;
 
+    @OneToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
+
 }
