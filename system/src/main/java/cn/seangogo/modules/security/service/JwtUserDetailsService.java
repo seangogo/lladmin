@@ -7,6 +7,7 @@ import cn.seangogo.modules.system.repository.PermissionRepository;
 import cn.seangogo.modules.system.repository.RoleRepository;
 import cn.seangogo.modules.security.security.JwtUser;
 import cn.seangogo.modules.system.service.UserService;
+import cn.seangogo.utils.EncryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8080
 
 spring:
   profiles:
@@ -22,9 +22,9 @@ spring:
   redis:
     #数据库索引
     database: 3
-    host: 172.16.4.22
+    host: 39.96.89.163
     port: 6379
-    password:
+    password: admin
     jedis:
       pool:
         #最大连接数

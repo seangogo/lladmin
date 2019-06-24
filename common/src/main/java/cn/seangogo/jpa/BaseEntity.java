@@ -71,7 +71,7 @@ public abstract class BaseEntity<U> implements Serializable {
     /**
      * 删除标志 0 - 正常 1 - 删除
      */
-    @Column(name = "del_flg")
+    @Column(name = "del_flag")
     @JsonIgnore
     private Integer delFlag=0;
 

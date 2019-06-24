@@ -1,16 +1,13 @@
 package cn.seangogo.modules.security.rest;
 
-import cn.seangogo.modules.security.security.AuthenticationInfo;
-import cn.seangogo.modules.security.security.AuthorizationUser;
-import cn.seangogo.modules.security.security.JwtUser;
-import lombok.extern.slf4j.Slf4j;
 import cn.seangogo.aop.log.Log;
 import cn.seangogo.modules.security.security.AuthenticationInfo;
 import cn.seangogo.modules.security.security.AuthorizationUser;
 import cn.seangogo.modules.security.security.JwtUser;
-import cn.seangogo.utils.EncryptUtils;
 import cn.seangogo.modules.security.utils.JwtTokenUtil;
+import cn.seangogo.utils.EncryptUtils;
 import cn.seangogo.utils.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +49,7 @@ public class AuthenticationController {
 
         final JwtUser jwtUser = (JwtUser) userDetailsService.loadUserByUsername(authorizationUser.getUsername());
 
+        System.out.println(EncryptUtils.encryptPassword(authorizationUser.getPassword()));
         if(!jwtUser.getPassword().equals(EncryptUtils.encryptPassword(authorizationUser.getPassword()))){
             throw new AccountExpiredException("密码错误");
         }
