@@ -28,12 +28,4 @@ public class SimpleCorsFilter implements Filter {
             chain.doFilter(req, res);
         }
     }
-
-    @Override
-    public void destroy() {
-    }
-
-    @Override
-    public void init(FilterConfig config) {
-    }
 }
