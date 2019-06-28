@@ -7,7 +7,6 @@ import com.custom.sean.common.annotation.SystemControllerLog;
 import com.custom.sean.common.utils.basics.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -67,7 +66,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             throw new UnapprovedClientAuthenticationException("clientSecret不匹配:" + clientId);
         }
         //构建tokenRequest
-        TokenRequest tokenRequest = new TokenRequest(MapUtils.EMPTY_MAP, clientId, clientDetails.getScope(), "custom");
+        TokenRequest tokenRequest = new TokenRequest(new HashMap<>(1), clientId, clientDetails.getScope(), "custom");
         OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
         OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);

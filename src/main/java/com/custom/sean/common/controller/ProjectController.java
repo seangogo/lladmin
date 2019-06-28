@@ -53,29 +53,6 @@ public class ProjectController {
         return DataResult.success(project);
     }
 
-
-    /**
-     * queryDsl查询
-     * @return
-     */
-    @GetMapping("/queryDsl")
-    public DataResult queryDslSelect() {
-        List<ProjectBrandDTO> projects= projectService.queryDslSelect();
-        return DataResult.success(projects);
-    }
-
-    /**
-     * queryDsl查询
-     *
-     * @return
-     */ //TODO PagedResourcesAssembler
-//    @RequestMapping(value = "/search/findById", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public DataResult findOfferById(Pageable pageable,
-//            PagedResourcesAssembler assembler) {
-//        Page<Project> projects = projectService.findAll(pageable);
-//        return DataResult.success(assembler.toResource(projects));
-//    }
-//
     /**
      * 修改项目
      *

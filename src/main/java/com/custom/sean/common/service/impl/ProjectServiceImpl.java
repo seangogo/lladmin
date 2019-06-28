@@ -92,9 +92,4 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, String> impleme
     public Page page(Pageable pageable) {
         return projectRepository.page(pageable);
     }
-
-    @Override
-    public List<ProjectBrandDTO> queryDslSelect() {
-        return projectRepository.projectBrandName();
-    }
 }
