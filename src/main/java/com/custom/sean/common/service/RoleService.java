@@ -12,7 +12,7 @@ import java.util.Map;
  * @author sean
  * @date 2017/11/6
  */
-public interface RoleService extends BaseService<Role,String> {
+public interface RoleService extends BaseService<Role,Long> {
 
     /**
      * 获取当前账户角色tree
@@ -41,20 +41,20 @@ public interface RoleService extends BaseService<Role,String> {
      * @param roleId
      * @return
      */
-    Map<String,Object> getRoleResources(String roleId);
+    Map<String,Object> getRoleResources(Long roleId);
 
     /**
      * 角色绑定资源
      * @param roleId 角色id
      * @param resourceIds 绑定的资源ids
      */
-    void setRoleResources(String roleId, String resourceIds);
+    void setRoleResources(Long roleId, String resourceIds);
 
     /**
      * 删除角色
      * @param id
      */
-    void deleteRole(String id);
+    void deleteRole(Long id);
 
     /**
      * 根据项目code查询所有角色
@@ -69,7 +69,7 @@ public interface RoleService extends BaseService<Role,String> {
      * @param id 角色id
      * @param roleVo vo
      */
-    void update(String id, Role roleVo);
+    void update(Long id, Role roleVo);
 
 
     /**

@@ -13,6 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,12 +33,11 @@ public abstract class BaseEntity<U> implements Serializable {
     /**
      * 主键ID自动生成策略
      */
-    @Id
-    @GenericGenerator(name = "id", strategy = "uuid2")
-    @GeneratedValue(generator = "id")
-    @Column(name = "sid", length = 36)
-    protected String id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
     /**
      * 创建人 登录帐号

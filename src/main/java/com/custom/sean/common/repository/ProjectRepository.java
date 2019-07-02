@@ -15,7 +15,7 @@ import java.util.Map;
  * @author sean
  * 2017/11/3.
  */
-public interface ProjectRepository extends BaseRepository<Project,String>{
+public interface ProjectRepository extends BaseRepository<Project,Long>{
 
     @Query("select new map(p.code as value,p.name as label,p.brand.id as bid, p.brand.name as bname) from Project p")
     List<Map<String,String>> findTree();

@@ -3,6 +3,7 @@ package com.custom.sean.common.domain;
 import com.custom.sean.common.utils.jpa.BaseEntity;
 import com.custom.sean.common.utils.menu.ResourceType;
 import com.custom.sean.common.utils.vo.rbac.ResourceInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,13 +35,13 @@ public class Resource extends BaseEntity<String> {
     /**
      * 资源编码
      */
-    @Column(length = 10, unique = true,updatable = false)
+    @Column(length = 10, unique = true, updatable = false)
     private String code;
 
     /**
      * 层级编码
      */
-    @Column(unique = true,updatable = false)
+    @Column(unique = true, updatable = false)
     private String levelCode;
 
     /**
@@ -82,10 +82,12 @@ public class Resource extends BaseEntity<String> {
     /**
      * 角色拥有权限的资源集合
      */
-    @OneToMany(mappedBy = "resource")
-    private Set<RoleResource> roleResourceSet = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "resources")
+    private Set<Role> roles;
 
-    public ResourceInfo roleToTree(List<String> ids) {
+
+    public ResourceInfo roleToTree(List<Long> ids) {
         ResourceInfo result = new ResourceInfo();
         BeanUtils.copyProperties(this, result);
         List<ResourceInfo> children = new ArrayList();

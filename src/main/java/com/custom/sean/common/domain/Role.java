@@ -45,7 +45,7 @@ public class Role extends BaseEntity<String> {
     /**
      * 父级ID
      */
-    private String parentId;
+    private Long parentId;
 
     /**
      * 角色简介
@@ -53,16 +53,17 @@ public class Role extends BaseEntity<String> {
     private String remark;
 
     /**
-     * 角色拥有权限的资源集合
-     */
-    @OneToMany(mappedBy = "role", cascade = {CascadeType.REMOVE})
-    @JsonIgnore
-    private Set<RoleResource> resources  = new HashSet<>();
-
-    /**
      * 角色的用户集合
      */
-    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
     @JsonIgnore
-    private Set<RoleUser> users = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
+    /**
+     * 角色拥有权限的资源集合
+     */
+    @ManyToMany
+    @JoinTable(name = "roles_resources", joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "resource_id",referencedColumnName = "id")})
+    private Set<Resource> resources;
+
 }

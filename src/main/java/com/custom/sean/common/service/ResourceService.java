@@ -14,7 +14,7 @@ import java.util.Set;
  * @author sean
  * @date 2017/11/6
  */
-public interface ResourceService extends BaseService<Resource, String> {
+public interface ResourceService extends BaseService<Resource, Long> {
 
     /**
      * 查询该用户所有菜单按钮
@@ -59,7 +59,7 @@ public interface ResourceService extends BaseService<Resource, String> {
      * @since 1.0.0
      */
 
-    ResourceVo getInfo(String id);
+    ResourceVo getInfo(Long id);
     /**
      * 新增资源
      *
@@ -79,7 +79,7 @@ public interface ResourceService extends BaseService<Resource, String> {
      * @date 2015年7月10日下午7:01:54
      * @since 1.0.0
      */
-    void update(String id, ResourceInfo resourceInfo);
+    void update(Long id, ResourceInfo resourceInfo);
 
 
     /**
@@ -89,7 +89,7 @@ public interface ResourceService extends BaseService<Resource, String> {
      * @date 2015年7月10日下午7:01:57
      * @since 1.0.0
      */
-    void deleteResource(String id);
+    void deleteResource(Long id);
 
     /**
      * 获取角色资树
@@ -97,7 +97,7 @@ public interface ResourceService extends BaseService<Resource, String> {
      * @param id
      * @return
      */
-    ResourceInfo getRoleTree(String id);
+    ResourceInfo getRoleTree(Long id);
 
     /**
      * 获取根节点

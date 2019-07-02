@@ -45,7 +45,7 @@ public class ResourceController {
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('resource','role')")
-    public DataResult findInfo(@PathVariable String id) {
+    public DataResult findInfo(@PathVariable Long id) {
         return DataResult.success(resourceService.getInfo(id));
     }
 
@@ -57,7 +57,7 @@ public class ResourceController {
      */
     @GetMapping("/roleTree/{id}")
     @PreAuthorize("hasAuthority('role')")
-    public ResourceInfo findRoleTree(@PathVariable String id) {
+    public ResourceInfo findRoleTree(@PathVariable Long id) {
         return resourceService.getRoleTree(id);
     }
 
@@ -83,7 +83,7 @@ public class ResourceController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('resource')")
-    public StateResult update(@PathVariable String id,
+    public StateResult update(@PathVariable Long id,
                               @RequestBody ResourceInfo resourceInfo) {
         resourceService.update(id, resourceInfo);
         return StateResult.success();
@@ -96,7 +96,7 @@ public class ResourceController {
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('resource')")
-    public StateResult deleteResource(@PathVariable String id) {
+    public StateResult deleteResource(@PathVariable Long id) {
         resourceService.deleteResource(id);
         return StateResult.success();
     }

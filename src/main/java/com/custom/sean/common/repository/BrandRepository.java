@@ -13,7 +13,7 @@ import java.util.Map;
  * @author sean
  * @date 2017/11/6
  */
-public interface BrandRepository extends BaseRepository<Brand,String> {
+public interface BrandRepository extends BaseRepository<Brand,Long> {
     /**
      * 根据编码查找
      * @param code 编码

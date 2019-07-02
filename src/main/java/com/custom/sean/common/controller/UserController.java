@@ -92,7 +92,7 @@ public class UserController {
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('user-opt')")
     @SystemControllerLog(description = "人员删除")
-    public StateResult delete(@PathVariable String id){
+    public StateResult delete(@PathVariable Long id){
         String orgCode = jwtTokenUtil.getOrgCode();
         userService.deleteUser(id, orgCode);
         return StateResult.success();
@@ -107,7 +107,7 @@ public class UserController {
     @PutMapping(value = "/edit/{id}")
     @PreAuthorize("hasAuthority('user-opt')")
     @SystemControllerLog(description = "人员信息修改")
-    public StateResult edit(@PathVariable String id,
+    public StateResult edit(@PathVariable Long id,
                             @RequestBody UserSaveVo userSaveVo){
         String orgCode = jwtTokenUtil.getOrgCode();
         userService.updateUser(id, userSaveVo, orgCode);
@@ -139,7 +139,7 @@ public class UserController {
     @PutMapping(value = "/active/{id}")
     @PreAuthorize("hasAuthority('user-opt')")
     @SystemControllerLog(description = "系统内激活")
-    public StateResult editActiveAccount(@PathVariable(value = "id") String id,
+    public StateResult editActiveAccount(@PathVariable(value = "id") Long id,
                                          @RequestBody Map<String, String> map) {
         return userService.activeAccount(id, map.get("password"));
     }
@@ -153,7 +153,7 @@ public class UserController {
     @PutMapping("/lock/{id}")
     @PreAuthorize("hasAuthority('user-opt')")
     @SystemControllerLog(description = "锁定/解锁")
-    public StateResult lock(@PathVariable(value = "id") String id) {
+    public StateResult lock(@PathVariable(value = "id") Long id) {
         userService.locked(id);
         return StateResult.success();
     }
@@ -167,7 +167,7 @@ public class UserController {
      */
     @GetMapping(value = "/edit/{id}")
     @PreAuthorize("hasAuthority('user-opt')")
-    public UserEditVo editData(@PathVariable String id) {
+    public UserEditVo editData(@PathVariable Long id) {
         String username=jwtTokenUtil.getUserName();
         return userService.findUserEdit(id,username);
     }
@@ -180,7 +180,7 @@ public class UserController {
      */
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('user')")
-    public UserDetailsVo searchUser(@PathVariable String id){
+    public UserDetailsVo searchUser(@PathVariable Long id){
         return userService.findUserDetail(id);
     }
 

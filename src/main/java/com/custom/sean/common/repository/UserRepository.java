@@ -15,7 +15,7 @@ import java.util.Map;
  * @author sean
  * 2017/11/2.
  */
-public interface UserRepository extends BaseRepository<User,String> {
+public interface UserRepository extends BaseRepository<User,Long> {
 
     @Query("select new map(u.id as value,u.realName as label) from User u where u.org.levelCode like ?1%")
     List<Map<String,String>> findByOrgCodeforAccount(String code);
@@ -56,5 +56,5 @@ public interface UserRepository extends BaseRepository<User,String> {
     @Modifying
     @Transactional
     @Query("update User a set a.account.password=?2, a.account.expireTime=?3, a.account.active=true where a.id=?1")
-    int updatePassword(String accounId, String newPassword, Date pwdExpDay);
+    int updatePassword(Long accounId, String newPassword, Date pwdExpDay);
 }

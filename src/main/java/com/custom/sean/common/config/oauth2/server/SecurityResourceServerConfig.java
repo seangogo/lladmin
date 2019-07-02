@@ -27,9 +27,11 @@ public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapte
     private FormAuthenticationConfig formAuthenticationConfig;
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
-        formAuthenticationConfig.configure(http);
-        http.csrf().disable()
+    public void configure(HttpSecurity httpSecurity) throws Exception {
+        formAuthenticationConfig.configure(httpSecurity);
+        httpSecurity
+                // 禁用 CSRF
+                .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()

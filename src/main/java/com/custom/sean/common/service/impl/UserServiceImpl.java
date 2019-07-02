@@ -2,18 +2,14 @@ package com.custom.sean.common.service.impl;
 
 import com.custom.sean.common.domain.Org;
 import com.custom.sean.common.domain.Role;
-import com.custom.sean.common.domain.RoleUser;
 import com.custom.sean.common.domain.User;
 import com.custom.sean.common.exception.CheckedException;
 import com.custom.sean.common.repository.RoleRepository;
-import com.custom.sean.common.repository.RoleResourceRepository;
-import com.custom.sean.common.repository.RoleUserRepository;
 import com.custom.sean.common.repository.UserRepository;
 import com.custom.sean.common.service.OrgService;
 import com.custom.sean.common.service.ResourceService;
 import com.custom.sean.common.service.RoleService;
 import com.custom.sean.common.service.UserService;
-import com.custom.sean.common.utils.basics.BusinessUtils;
 import com.custom.sean.common.utils.basics.JwtTokenUtil;
 import com.custom.sean.common.utils.jpa.BaseRepository;
 import com.custom.sean.common.utils.jpa.BaseServiceImpl;
@@ -47,7 +43,7 @@ import static java.util.stream.Collectors.groupingBy;
  */
 @Service
 @Transactional
-public class UserServiceImpl extends BaseServiceImpl<User, String> implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User, Long> implements UserService {
     @Resource
     private UserRepository userRepository;
 
@@ -61,12 +57,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
     private RoleService roleService;
 
     @Resource
-    private RoleResourceRepository roleResourceRepository;
-
-    @Resource
-    private RoleUserRepository roleUserRepository;
-
-    @Resource
     private PasswordEncoder passwordEncoder;
 
     @Resource
@@ -76,7 +66,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public BaseRepository<User, String> getBaseDao() {
+    public BaseRepository<User, Long> getBaseDao() {
         return this.userRepository;
     }
 
@@ -154,10 +144,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
      */
     @Override
     public void createRoleAdmin(User user, Role role) {
-        RoleUser roleUser = new RoleUser();
-        roleUser.setRole(role);
-        roleUser.setUser(user);
-        roleUserRepository.save(roleUser);
+        // // todo 组织关联验证
+//        RoleUser roleUser = new RoleUser();
+//        roleUser.setRole(role);
+//        roleUser.setUser(user);
+//        roleUserRepository.save(roleUser);
     }
 
     /**
@@ -166,7 +157,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
      * @param userSaveVo 前端数据
      */
     @Override
-    public void updateUser(String id, UserSaveVo userSaveVo, String orgCode){
+    public void updateUser(Long id, UserSaveVo userSaveVo, String orgCode){
         Org org=orgService.find(userSaveVo.getOrgId());
         if (!org.getLevelCode().startsWith(orgCode)) {
             throw new CheckedException(ResultEnum.ORG_NOT_EXIST);
@@ -179,22 +170,23 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
         userRepository.saveAndFlush(user);
         //角色
         String[] resourceIdArray = userSaveVo.getRoleId().split(",");
-        Set<String> ids = new HashSet<>(roleUserRepository.findRoleByUserId(user.getId()));
-        List<Set<String>> retainList = BusinessUtils.getRetainList(ids, new HashSet<>(Arrays.asList(resourceIdArray)));
-        //删除旧差集
-        if (retainList.get(0).size() > 0) {
-            roleUserRepository.deleteforRoleIdsAndUserId(retainList.get(0), user.getId());
-        }
-        //添加新差集
-        List<Role> roles = roleRepository.findByIdIn(retainList.get(1));
-        List<RoleUser> roleUsers = new ArrayList<>();
-        for (Role role : roles) {
-            RoleUser roleUser = new RoleUser();
-            roleUser.setRole(role);
-            roleUser.setUser(user);
-            roleUsers.add(roleUser);
-        }
-        roleUserRepository.saveAll(roleUsers);
+        // todo 组织关联验证
+//        Set<Long> ids = new HashSet<>(roleUserRepository.findRoleByUserId(user.getId()));
+//        List<Set<Long>> retainList = BusinessUtils.getRetainList(ids, new HashSet<>(Arrays.stream(resourceIdArray).map(Long::valueOf).collect(Collectors.toList())));
+//        //删除旧差集
+//        if (retainList.get(0).size() > 0) {
+//            roleUserRepository.deleteforRoleIdsAndUserId(retainList.get(0), user.getId());
+//        }
+//        //添加新差集
+//        List<Role> roles = (List<Role>) roleRepository.findByIdIn(retainList.get(1));
+//        List<RoleUser> roleUsers = new ArrayList<>();
+//        for (Role role : roles) {
+//            RoleUser roleUser = new RoleUser();
+//            roleUser.setRole(role);
+//            roleUser.setUser(user);
+//            roleUsers.add(roleUser);
+//        }
+//        roleUserRepository.saveAll(roleUsers);
     }
 
 
@@ -205,7 +197,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
      * @param orgCode 组织编码
      */
     @Override
-    public void deleteUser(String id, String orgCode){
+    public void deleteUser(Long id, String orgCode){
         User user = find(id);
         if (user == null) {
             throw new CheckedException(ResultEnum.USER_NOT_EXIST);
@@ -214,7 +206,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
             throw new CheckedException(ResultEnum.ORG_NOT_EXIST);
         }
         delete(user.getId());
-        roleUserRepository.deleteByUser(user);
+        // todo 组织关联验证
+        // roleUserRepository.deleteByUser(user);
     }
 
     /**
@@ -228,7 +221,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
         List<String> ids = Arrays.asList(id.split(","));
         List<User> users = userRepository.findByIdIn(ids);
         userRepository.batchesDelete(ids, orgCode);
-        roleUserRepository.deleteByUserIn(users);
+        // todo 组织关联验证
+        // roleUserRepository.deleteByUserIn(users);
     }
 
     /**
@@ -249,7 +243,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
      * @return UserDetailsVo
      */
     @Override
-    public UserDetailsVo findUserDetail(String id) {
+    public UserDetailsVo findUserDetail(Long id) {
         UserDetailsVo userDetailsVo = new UserDetailsVo();
         User user = find(id);
         Org org = user.getOrg();
@@ -260,12 +254,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
         userDetailsVo.setOrgType(org.getOrgType());
         userDetailsVo.setRemark(org.getRemark());
         //角色
-        List<Role> roles = roleUserRepository.findRolesByUserId(id);
+        List<Role> roles = new ArrayList<>(user.getRoles());
         List<UserDetailRoleVo> userDetailRoleVos = new ArrayList<>();
         for (Role role : roles) {
             UserDetailRoleVo userDetailRoleVo = new UserDetailRoleVo();
             userDetailRoleVo.setName(role.getName());
-            userDetailRoleVo.setResourceName(roleResourceRepository.findResourceNameByRole(role));
+            // todo
+         //   userDetailRoleVo.setResourceName(roleResourceRepository.findResourceNameByRole(role));
             userDetailRoleVos.add(userDetailRoleVo);
         }
         userDetailsVo.setRoles(userDetailRoleVos);
@@ -283,9 +278,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
     }
 
     @Override
-    public UserEditVo findUserEdit(String id, String username) {
+    public UserEditVo findUserEdit(Long id, String username) {
         User user = find(id);
-        Set<String> roles=roleUserRepository.findRoleByUserId(id);
+        Set<Long> roles=user.getRoles().stream().map(Role::getId).collect(Collectors.toSet());
         List<String> labels =roleService.findLabel(username).stream()
                 .map(m->m.get("value")).collect(Collectors.toList());
         if (!labels.containsAll(roles)){
@@ -294,7 +289,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
         UserEditVo userEditVo = new UserEditVo();
         BeanUtils.copyProperties(user, userEditVo);
         userEditVo.setRoleId(roles);
-        userEditVo.setOrgId(user.getOrg().getId());
+        userEditVo.setOrgId(user.getOrg().getLevelCode());
         return userEditVo;
     }
 
@@ -306,7 +301,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
      * @return
      */
     @Override
-    public StateResult activeAccount(String id, String password) {
+    public StateResult activeAccount(Long id, String password) {
         User user = find(id);
         if (!user.isAccountNonExpired()) {
             user.getAccount().setActive(true);
@@ -325,7 +320,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
      * @param id 用户id
      */
     @Override
-    public void locked(String id) {
+    public void locked(Long id) {
         User user = find(id);
         user.getAccount().setLocked(!user.getAccount().isLocked());
         userRepository.save(user);
@@ -391,8 +386,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, String> implements Us
                 predicates.add(criteriaBuilder.like(root.get("phone").as(String.class), "%" + phone + "%"));
             }
             if (null != roleId) {
-                Join<User, RoleUser> join = root.join("roles", JoinType.LEFT);
-                predicates.add(criteriaBuilder.equal(join.get("role").get("id").as(String.class), roleId));
+              //  Join<User, RoleUser> join = root.join("roles", JoinType.LEFT);
+               // predicates.add(criteriaBuilder.equal(join.get("role").get("id").as(String.class), roleId));
             }
             if (null != username) {
                 predicates.add(criteriaBuilder.like(root.get("account").get("username").as(String.class), "%" + username + "%"));

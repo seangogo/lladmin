@@ -61,13 +61,13 @@ public class Dict extends BaseEntity<String> {
     private List<Dict> children;
 
     @Transient
-    private String value;
+    private Long value;
 
     @Transient
     private String title;
 
-    public String getValue() {
-        return this.id;
+    public Long getValue() {
+        return super.getId();
     }
 
     public String getTitle() {
@@ -79,7 +79,7 @@ public class Dict extends BaseEntity<String> {
     }
 
     public Dict(String name, String code, String parentId, String levelCode, String remark,
-                String createdBy, Date createDate, int delFlag, String id, int version, String updateBy, Date updatedDate) {
+                String createdBy, Date createDate, int delFlag, Long id, int version, String updateBy, Date updatedDate) {
         this.name = name;
         this.code = code;
         this.parentId = parentId;

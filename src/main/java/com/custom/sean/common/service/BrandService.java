@@ -11,6 +11,6 @@ import java.util.Map;
  * @author sean
  * @date 2018/2/6
  */
-public interface BrandService extends BaseService<Brand,String>{
+public interface BrandService extends BaseService<Brand,Long>{
     List<Map<String,String>> findLabels();
 }

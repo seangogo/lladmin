@@ -14,9 +14,9 @@ import java.util.List;
  * 2017/11/3.
  */
 
-public interface ProjectService extends BaseService<Project, String> {
+public interface ProjectService extends BaseService<Project, Long> {
 
-    void updateOne(String id, Project project);
+    void updateOne(Long id, Project project);
 
     boolean isUse(String code);
 

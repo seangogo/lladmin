@@ -12,7 +12,7 @@ import java.util.Set;
  * @author sean
  * @date 2017/11/6
  */
-public interface ResourceRepository extends BaseRepository<Resource,String> {
+public interface ResourceRepository extends BaseRepository<Resource,Long> {
     /**
      * 通过资源名称查找资源
      * @param name 资源名称
@@ -55,7 +55,7 @@ public interface ResourceRepository extends BaseRepository<Resource,String> {
      * @param id 父id
      * @return 子资源集合
      */
-    List<Resource> findByParent_Id(String id);
+    List<Resource> findByParent_Id(Long id);
 
     /** 查找排序
      * @return 最大排序数

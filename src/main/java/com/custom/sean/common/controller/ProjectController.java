@@ -1,7 +1,6 @@
 package com.custom.sean.common.controller;
 
 import com.custom.sean.common.domain.Project;
-import com.custom.sean.common.domain.dto.ProjectBrandDTO;
 import com.custom.sean.common.service.ProjectService;
 import com.custom.sean.common.utils.vo.DataResult;
 import com.custom.sean.common.utils.vo.StateResult;
@@ -62,7 +61,7 @@ public class ProjectController {
      * @throws Exception Exception
      */
     @PutMapping("/edit/{id}")
-    public StateResult edit(@PathVariable String id,
+    public StateResult edit(@PathVariable Long id,
                             @RequestBody Project project){
         projectService.updateOne(id, project);
         return StateResult.success();
@@ -75,7 +74,7 @@ public class ProjectController {
      * @return 成功结果
      */
     @DeleteMapping(value = "/delete/{id}")
-    public StateResult deleteProject(@PathVariable String id) {
+    public StateResult deleteProject(@PathVariable Long id) {
         projectService.delete(id);
         return StateResult.success();
     }

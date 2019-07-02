@@ -18,7 +18,7 @@ public class UserEditVo {
     /**
      * id
      */
-    private String id;
+    private Long id;
 
     /**
      * 账户名
@@ -61,5 +61,5 @@ public class UserEditVo {
     /**
      * 角色id
      */
-    private Set<String> roleId;
+    private Set<Long> roleId;
 }

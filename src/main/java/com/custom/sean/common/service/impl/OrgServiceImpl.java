@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgService {
+public class OrgServiceImpl extends BaseServiceImpl<Org, Long> implements OrgService {
     @Resource
     private OrgRepository orgRepository;
 
@@ -46,7 +46,7 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
     private OrgBrandRepository orgBrandRepository;
 
     @Override
-    public BaseRepository<Org, String> getBaseDao() {
+    public BaseRepository<Org, Long> getBaseDao() {
         return this.orgRepository;
     }
 
@@ -104,7 +104,7 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
     @Override
     public void add(Org org) {
         String[] bIds=StringUtils.split(org.getBrandIds(),",");
-        Collection<Brand> brands=brandService.findList(Arrays.asList(bIds));
+        Collection<Brand> brands=brandService.findList(Arrays.stream(bIds).map(Long::valueOf).collect(Collectors.toList()));
         Org parent = find(org.getParentId());
         org.setLevelCode(parent.getLevelCode()+"-"+org.getCode());
         org.setOrgType(OrgType.values()[parent.getOrgType().ordinal() + 1]);
@@ -120,7 +120,7 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
      * @param currentOrgCode 当前登陆用户组织编码
      */
     @Override
-    public void deleteOne(String id, String currentOrgCode) {
+    public void deleteOne(Long id, String currentOrgCode) {
         Org org=find(id);
         String orgCode=org.getLevelCode();
         if (!orgCode.startsWith(currentOrgCode)) {
@@ -167,16 +167,16 @@ public class OrgServiceImpl extends BaseServiceImpl<Org, String> implements OrgS
      * @param orgVo Vo
      */
     @Override
-    public void update(String id, Org orgVo) {
+    public void update(Long id, Org orgVo) {
         Org org=find(id);
         if (id.equals(orgVo.getParentId())){
             throw new CheckedException(ResultEnum.ORG_ONESELF_PARENT);
         }
-        List<String> ids=org.getBrands().stream().map(OrgBrand::getBrand).map(Brand::getId).collect(Collectors.toList());
+        List<Long> ids=org.getBrands().stream().map(OrgBrand::getBrand).map(Brand::getId).collect(Collectors.toList());
         if (!orgVo.getBrandIds().equals(StringUtils.join(ids,","))){
             String[] bIds=StringUtils.split(orgVo
                     .getBrandIds(),",");
-            Collection<Brand> brands=brandService.findList(Arrays.asList(bIds));
+            Collection<Brand> brands=brandService.findList(Arrays.stream(bIds).map(Long::valueOf).collect(Collectors.toList()));
             orgBrandRepository.deleteByOrg(org);
             Set orgBrands= new HashSet();
             brands.forEach(brand -> orgBrands.add(new OrgBrand(org,brand)));

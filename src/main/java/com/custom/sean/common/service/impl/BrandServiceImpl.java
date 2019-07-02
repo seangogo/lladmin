@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class BrandServiceImpl  extends BaseServiceImpl<Brand, String> implements BrandService {
+public class BrandServiceImpl  extends BaseServiceImpl<Brand, Long> implements BrandService {
 
     @Resource
     private BrandRepository brandRepository;
@@ -29,7 +29,7 @@ public class BrandServiceImpl  extends BaseServiceImpl<Brand, String> implements
     private ProjectRepository projectRepository;
 
     @Override
-    public BaseRepository<Brand, String> getBaseDao() {
+    public BaseRepository<Brand, Long> getBaseDao() {
         return this.brandRepository;
     }
 

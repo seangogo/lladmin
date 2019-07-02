@@ -3,7 +3,6 @@ package com.custom.sean.common.service.impl;
 
 import com.custom.sean.common.domain.Brand;
 import com.custom.sean.common.domain.Project;
-import com.custom.sean.common.domain.dto.ProjectBrandDTO;
 import com.custom.sean.common.repository.ProjectRepository;
 import com.custom.sean.common.service.BrandService;
 import com.custom.sean.common.service.ProjectService;
@@ -25,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true,rollbackFor = Exception.class)
-public class ProjectServiceImpl extends BaseServiceImpl<Project, String> implements ProjectService {
+public class ProjectServiceImpl extends BaseServiceImpl<Project, Long> implements ProjectService {
 
     private final ProjectRepository projectRepository;
 
@@ -38,12 +37,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, String> impleme
     }
 
     @Override
-    public BaseRepository<Project, String> getBaseDao() {
+    public BaseRepository<Project, Long> getBaseDao() {
         return this.projectRepository;
     }
 
     @Override
-    public void updateOne(String id, Project project){
+    public void updateOne(Long id, Project project){
         Project p = projectRepository.getOne(id);
         Brand brand=brandService.find(project.getBrand().getId());
         p.setBrand(brand);

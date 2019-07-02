@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @author sean
  * @date 2018/2/1
  */
-public interface LogRepository extends JpaRepository<Log, String>, JpaSpecificationExecutor<Log> {
+public interface LogRepository extends JpaRepository<Log, Long>, JpaSpecificationExecutor<Log> {
 
 }

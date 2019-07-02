@@ -21,7 +21,7 @@ public class ResourceInfo {
 	/**
 	 * 资源id
 	 */
-	private String id;
+	private Long id;
 
 	/**
 	 * 资源名称
@@ -56,7 +56,7 @@ public class ResourceInfo {
 	/**
 	 * 父资源
 	 */
-	private String parentId;
+	private Long parentId;
 
 	/**
 	 * 创建人

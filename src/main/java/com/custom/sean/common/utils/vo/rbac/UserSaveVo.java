@@ -54,5 +54,5 @@ public class UserSaveVo {
 	/**
 	 * 层级编码
 	 */
-	private String orgId;
+	private Long orgId;
 }

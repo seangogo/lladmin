@@ -29,7 +29,7 @@ public class ResourceVo {
     private ResourceType type;
 
     //@Range(min = 36,max = 36,message = "数据有误")
-    private String parentId;
+    private Long parentId;
 
     /**
      * 图标样式

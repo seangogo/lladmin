@@ -2,11 +2,9 @@ package com.custom.sean.common.service.impl;
 
 import com.custom.sean.common.domain.Resource;
 import com.custom.sean.common.domain.Role;
-import com.custom.sean.common.domain.RoleResource;
 import com.custom.sean.common.exception.CheckedException;
 import com.custom.sean.common.repository.ResourceRepository;
 import com.custom.sean.common.repository.RoleRepository;
-import com.custom.sean.common.repository.RoleResourceRepository;
 import com.custom.sean.common.service.RoleService;
 import com.custom.sean.common.utils.basics.BusinessUtils;
 import com.custom.sean.common.utils.basics.JwtTokenUtil;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -31,7 +30,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements RoleService {
+public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -40,16 +39,13 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
     private ResourceRepository resourceRepository;
 
     @Autowired
-    private RoleResourceRepository roleResourceRepository;
-
-    @Autowired
     private SecurityProperties securityProperties;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public BaseRepository<Role, String> getBaseDao() {
+    public BaseRepository<Role, Long> getBaseDao() {
         return this.roleRepository;
     }
 
@@ -116,11 +112,12 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
      * @return
      */
     @Override
-    public Map<String,Object> getRoleResources(String roleId){
+    public Map<String,Object> getRoleResources(Long roleId){
         Role role=find(roleId);
         Role parent=find(role.getParentId());
-        List<String> allIds=roleResourceRepository.findIdsByRid(roleId);
-        List<String> parentIds=roleResourceRepository.findIdsByRid(parent.getId());
+        List<Long> allIds=role.getResources().stream().map(Resource::getId).collect(Collectors.toList());
+        List<Long> parentIds=new ArrayList<>();
+        // roleResourceRepository.findIdsByRid(parent.getId());
         Set<String> pid=allIds.size()>0?resourceRepository.findPidByIdIn(allIds.toArray()):new HashSet<>();
         allIds.removeAll(pid);
         Map<String,Object> map=new HashMap<>(2);
@@ -136,29 +133,31 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
      * @param resourceIds 绑定的资源ids
      */
     @Override
-    public void setRoleResources(String roleId, String resourceIds){
+    public void setRoleResources(Long roleId, String resourceIds){
         Role role = find(roleId);
         if (role.getCode().equals(securityProperties.getInit().getSysadmin())){
             throw new CheckedException(ResultEnum.SUPER_CANNOT_UPDATE);
         }
         resourceIds = StringUtils.removeEnd(resourceIds, ",");
         String[] resourceIdArray = StringUtils.splitByWholeSeparatorPreserveAllTokens(resourceIds, ",");
-        Set<String> ids= new HashSet<>(roleResourceRepository.findIdsByRid(roleId));
-        List<Set<String>> retainList=BusinessUtils.getRetainList(ids,new HashSet<>(Arrays.asList(resourceIdArray)));
+        Set<Long> ids= new HashSet<>(role.getResources().stream().map(Resource::getId).collect(Collectors.toList()));
+        List<Set<Long>> retainList=BusinessUtils.getRetainList(ids,new HashSet<>(Arrays.stream(resourceIdArray).map(Long::valueOf).collect(Collectors.toList())));
         //删除旧差集
         if (retainList.get(0).size()>0){
-            roleResourceRepository.deleteforResourceIdsAndRoleId(retainList.get(0),roleId);
+            //todo  roleResourceRepository
+           // roleResourceRepository.deleteforResourceIdsAndRoleId(retainList.get(0),roleId);
         }
         //添加新差集
-        List<Resource> resources=resourceRepository.findByIdIn(retainList.get(1));
-        List<RoleResource> roleResources=new ArrayList();
-        for (Resource resource : resources) {
-            RoleResource roleResource = new RoleResource();
-            roleResource.setRole(role);
-            roleResource.setResource(resource);
-            roleResources.add(roleResource);
-        }
-        roleResourceRepository.saveAll(roleResources);
+        List<Resource> resources= (List<Resource>) resourceRepository.findByIdIn(retainList.get(1));
+//        List<RoleResource> roleResources=new ArrayList();
+//        for (Resource resource : resources) {
+//            RoleResource roleResource = new RoleResource();
+//            roleResource.setRole(role);
+//            roleResource.setResource(resource);
+//            roleResources.add(roleResource);
+//        }
+        // todo           roleResourceRepository
+        // roleResourceRepository.saveAll(roleResources);
     }
 
     /**
@@ -166,7 +165,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
      * @param id
      */
     @Override
-    public void deleteRole(String id){
+    public void deleteRole(Long id){
         Role example=new Role();
         example.setParentId(id);
         if (roleRepository.exists(Example.of(example))) {
@@ -177,7 +176,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
         if (role.getUsers().size()>0){
             throw new CheckedException(ResultEnum.DATA_BIND_NOT_DELETE);
         }
-        roleResourceRepository.deleteByRole_Id(id);
+        // todo 组织关联验证
+        // roleResourceRepository.deleteByRole_Id(id);
         delete(role);
     }
 
@@ -201,7 +201,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
      * @param roleVo vo
      */
     @Override
-    public void update(String id, Role roleVo) {
+    public void update(Long id, Role roleVo) {
         Role role = find(id);
         if (role.getCode().equals(securityProperties.getInit().getSysadmin())){
             throw new  CheckedException(ResultEnum.SUPER_CANNOT_UPDATE);
@@ -222,7 +222,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,String> implements Rol
             throw new CheckedException(ResultEnum.ROLES_BIND_NOT_DELETE);
         }
         for (String s : ids) {
-            roleResourceRepository.deleteByRole_Id(s);
+            // // todo 组织关联验证
+           //  roleResourceRepository.deleteByRole_Id(Long.valueOf(s));
         }
         roleRepository.deleteByIdIn(ids);
     }

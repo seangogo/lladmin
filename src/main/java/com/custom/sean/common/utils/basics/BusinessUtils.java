@@ -16,21 +16,21 @@ import java.util.Set;
  * Created by sean on 2017/12/22.
  */
 public class BusinessUtils {
-    public static List<Set<String>> getRetainList(Set<String> existList,Set<String> newList) {
+    public static List<Set<Long>> getRetainList(Set<Long> existList,Set<Long> newList) {
         //要删除的集合
-        Set<String> allList=new HashSet<>();
+        Set<Long> allList=new HashSet<>();
         allList.addAll(newList);
         allList.addAll(existList);
         allList.removeAll(newList);
-        Set<String> deleteSet=new HashSet<>();
+        Set<Long> deleteSet=new HashSet<>();
         deleteSet.addAll(allList);
         //要新增的集合
         allList.addAll(newList);
         allList.removeAll(existList);
-        Set<String> addSet=new HashSet<>();
+        Set<Long> addSet=new HashSet<>();
         addSet.addAll(allList);
 
-        List<Set<String>> resultList=new ArrayList<>();
+        List<Set<Long>> resultList=new ArrayList<>();
         resultList.add(deleteSet);
         resultList.add(addSet);
         return resultList;

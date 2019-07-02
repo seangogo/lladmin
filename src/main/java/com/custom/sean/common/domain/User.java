@@ -17,7 +17,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -70,10 +69,10 @@ public class User extends BaseEntity<String> implements UserDetails {
     /**
      * 用户的所有角色
      */
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private Set<RoleUser> roles = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    private Set<Role> roles;
 
     /**
      * 用户所在的组织
@@ -100,13 +99,13 @@ public class User extends BaseEntity<String> implements UserDetails {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        Set<RoleUser> roleUsers = this.getRoles();
-        if (roleUsers != null) {
-            for (RoleUser roleUser : roleUsers) {
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + roleUser.getRole().getCode());
+        Set<Role> roles = this.getRoles();
+        if (roles != null) {
+            for (Role role : roles) {
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getCode());
                 authorities.add(authority);
-                Set<RoleResource> roleResources = roleUser.getRole().getResources();
-                roleResources.forEach(roleResource->authorities.add(new SimpleGrantedAuthority(roleResource.getResource().getCode())));
+                Set<Resource> resources = role.getResources();
+                resources.forEach(resource->authorities.add(new SimpleGrantedAuthority(resource.getCode())));
             }
         }
         return authorities;

@@ -1,14 +1,10 @@
 package com.custom.sean.common.controller;
 
-import com.custom.sean.common.domain.Resource;
 import com.custom.sean.common.domain.Role;
-import com.custom.sean.common.repository.RoleResourceRepository;
-import com.custom.sean.common.service.ResourceService;
 import com.custom.sean.common.service.RoleService;
 import com.custom.sean.common.utils.basics.JwtTokenUtil;
 import com.custom.sean.common.utils.vo.PageResult;
 import com.custom.sean.common.utils.vo.StateResult;
-import com.custom.sean.common.utils.vo.rbac.ResourceInfo;
 import com.custom.sean.common.utils.vo.rbac.RoleTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Predicate;
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +94,7 @@ public class RoleController {
      */
     @PutMapping(value = "/edit/{id}")
     @PreAuthorize("hasAuthority('role_opt')")
-    public StateResult edit(@PathVariable String id,
+    public StateResult edit(@PathVariable Long id,
                             @RequestBody Role roleVo) {
         roleService.update(id,roleVo);
         return StateResult.success();
@@ -114,7 +108,7 @@ public class RoleController {
      */
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('role_opt')")
-    public StateResult delete(@PathVariable String id){
+    public StateResult delete(@PathVariable Long id){
         roleService.deleteRole(id);
         return StateResult.success();
     }
@@ -140,7 +134,7 @@ public class RoleController {
      */
     @GetMapping("/resourceIds/{id}")
     @PreAuthorize("hasAuthority('role_opt')")
-    public Map<String, Object> findRoleIds(@PathVariable String id) {
+    public Map<String, Object> findRoleIds(@PathVariable Long id) {
         return roleService.getRoleResources(id);
     }
 
@@ -152,7 +146,7 @@ public class RoleController {
     @PostMapping(value = "/bindResource")
     @PreAuthorize("hasAuthority('role_opt')")
     public StateResult editBindResource(@RequestBody Map<String, String> map){
-        roleService.setRoleResources(map.get("roleId"), map.get("resourceIds"));
+        roleService.setRoleResources(Long.valueOf(map.get("roleId")), map.get("resourceIds"));
         return StateResult.success();
     }
 

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 
-public interface DictRepository extends BaseRepository<Dict, String> {
+public interface DictRepository extends BaseRepository<Dict, Long> {
     @Modifying
     @Transactional
     @Query("update Dict d set d.levelCode=concat(?1,d.code) where d.levelCode like CONCAT(?2,'%')")

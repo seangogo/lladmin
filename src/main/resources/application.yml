@@ -5,10 +5,11 @@ spring:
         enabled: false
    #数据库配置
   datasource:
-    schema: classpath:database/schema-mysql.sql
-    data: classpath:database/data-mysql.sql
+#    schema: classpath:database/schema-mysql.sql
+#    data: classpath:database/data-mysql.sql
     #initialization-mode: always
     druid:
+      type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://39.96.89.163:3306/lladmin?useUnicode=true&characterEncoding=UTF-8&useSSL=true
       username: root

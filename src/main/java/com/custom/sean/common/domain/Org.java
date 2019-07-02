@@ -17,10 +17,9 @@ import java.util.Set;
  * Created by sean on 2018/1/8.
  */
 @Entity
-@Table(name = "auth_org")
 @Getter
 @Setter
-@DynamicUpdate
+@Table(name = "auth_org")
 public class Org extends BaseEntity<String> {
     /**
      * 名称
@@ -37,7 +36,7 @@ public class Org extends BaseEntity<String> {
     /**
      * 父级id
      */
-    private String parentId;
+    private Long parentId;
 
     /**
      * 层级编码

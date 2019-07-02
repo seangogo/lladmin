@@ -62,7 +62,7 @@ public class BrandController extends BaseController {
      * @return success
      */
     @DeleteMapping(value = "/delete/{id}")
-    public StateResult delete(@PathVariable String id) {
+    public StateResult delete(@PathVariable Long id) {
         brandService.delete(id);
         return StateResult.success();
     }

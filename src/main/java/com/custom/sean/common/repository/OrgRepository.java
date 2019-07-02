@@ -12,7 +12,7 @@ import java.util.Map;
  * @author sean
  * @date 2018/1/8
  */
-public interface OrgRepository extends BaseRepository<Org, String> {
+public interface OrgRepository extends BaseRepository<Org, Long> {
     /**
      * 查找当前组织和子组织
      * @param levelCode 层级编码

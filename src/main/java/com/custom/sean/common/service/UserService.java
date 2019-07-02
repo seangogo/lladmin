@@ -22,7 +22,7 @@ import java.util.Map;
  * 2017/11/2.
  */
 
-public interface UserService extends BaseService<User, String>{
+public interface UserService extends BaseService<User, Long>{
 
     /**
      * 获取当前用户信息,查询该用户所有菜单按钮
@@ -60,7 +60,7 @@ public interface UserService extends BaseService<User, String>{
      *
      * @param userSaveVo 前端数据
      */
-    void updateUser(String id, UserSaveVo userSaveVo, String orgCode);
+    void updateUser(Long id, UserSaveVo userSaveVo, String orgCode);
 
 
     /**
@@ -69,7 +69,7 @@ public interface UserService extends BaseService<User, String>{
      * @param id      用户id
      * @param orgCode 组织编码
      */
-    void deleteUser(String id, String orgCode);
+    void deleteUser(Long id, String orgCode);
 
     /**
      * 批量删除
@@ -93,7 +93,7 @@ public interface UserService extends BaseService<User, String>{
      * @param id 用户主键
      * @return UserDetailsVo
      */
-    UserDetailsVo findUserDetail(String id);
+    UserDetailsVo findUserDetail(Long id);
 
     /**
      *  根据用户名查询用户
@@ -102,7 +102,7 @@ public interface UserService extends BaseService<User, String>{
      */
     User findUserByLoginName(String username);
 
-    UserEditVo findUserEdit(String id, String username);
+    UserEditVo findUserEdit(Long id, String username);
 
     /**
      * 系统内激活
@@ -111,14 +111,14 @@ public interface UserService extends BaseService<User, String>{
      * @param password 密码
      * @return
      */
-    StateResult activeAccount(String id, String password);
+    StateResult activeAccount(Long id, String password);
 
     /**
      * 锁定/解锁
      *
      * @param id 用户id
      */
-    void locked(String id);
+    void locked(Long id);
     /**
      * 退出登陆
      *

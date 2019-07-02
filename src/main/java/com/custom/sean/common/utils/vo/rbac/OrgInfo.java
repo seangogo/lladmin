@@ -14,11 +14,11 @@ import java.util.List;
 @Getter
 public class OrgInfo {
 
-    private String id;
+    private Long id;
 
     private String name;
 
-    private String value;
+    private Long value;
 
     private String label;
 
@@ -32,7 +32,7 @@ public class OrgInfo {
 
     private String remark;
 
-    private List<String> brandIds;
+    private List<Long> brandIds;
 
     private List<OrgInfo> children;
 }

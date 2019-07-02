@@ -14,7 +14,7 @@ import java.util.Map;
  * @author sean
  * @date 2018/1/8
  */
-public interface OrgService extends BaseService<Org,String> {
+public interface OrgService extends BaseService<Org,Long> {
 
     OrgInfo getTree(String orgCode);
 
@@ -46,7 +46,7 @@ public interface OrgService extends BaseService<Org,String> {
      * @param id 主键
      * @param currentOrgCode 当前登陆用户组织编码
      */
-    void deleteOne(String id, String currentOrgCode);
+    void deleteOne(Long id, String currentOrgCode);
 
     /**
      * 初始化账号-组织-品牌-项目
@@ -67,5 +67,5 @@ public interface OrgService extends BaseService<Org,String> {
      * 修改组织
      * @param orgVo Vo
      */
-    void update(String id, Org orgVo);
+    void update(Long id, Org orgVo);
 }

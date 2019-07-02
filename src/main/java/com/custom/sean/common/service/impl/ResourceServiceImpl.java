@@ -4,7 +4,6 @@ import com.custom.sean.common.domain.*;
 import com.custom.sean.common.exception.CheckedException;
 import com.custom.sean.common.repository.ResourceRepository;
 import com.custom.sean.common.repository.RoleRepository;
-import com.custom.sean.common.repository.RoleResourceRepository;
 import com.custom.sean.common.repository.UserRepository;
 import com.custom.sean.common.service.ResourceService;
 import com.custom.sean.common.utils.jpa.BaseRepository;
@@ -38,7 +37,7 @@ import java.util.Set;
  */
 @Service
 @Transactional
-public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> implements ResourceService {
+public class ResourceServiceImpl extends BaseServiceImpl<Resource, Long> implements ResourceService {
 
     @Autowired
     private ResourceRepository resourceRepository;
@@ -47,19 +46,13 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
     private RoleRepository roleRepository;
 
     @Autowired
-    private RoleResourceRepository roleResourceRepository;
-
-    @Autowired
-    private SecurityProperties securityProperties;
-
-    @Autowired
     private UserRepository userRepository;
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public BaseRepository<Resource, String> getBaseDao() {
+    public BaseRepository<Resource, Long> getBaseDao() {
         return this.resourceRepository;
     }
 
@@ -72,10 +65,10 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
 
     @Override
     public AccountOut getMenu(AccountOut accountOut, Set<String> codes) {
-        List<Resource> menus = roleResourceRepository.findMenuByRoles(codes);
-        AuthInfo authInfo = getAuthInfo(menus, resourceRepository.findByName("根节点"));
-        accountOut.setButtons(roleResourceRepository.findButtonByRoles(codes));
-        accountOut.setAuthInfo(authInfo);
+       // List<Resource> menus = roleResourceRepository.findMenuByRoles(codes);
+     //   AuthInfo authInfo = getAuthInfo(menus, resourceRepository.findByName("根节点"));
+     //   accountOut.setButtons(roleResourceRepository.findButtonByRoles(codes));
+      //  accountOut.setAuthInfo(authInfo);
         return accountOut;
     }
 
@@ -166,7 +159,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
      * @since 1.0.0
      */
     @Override
-    public ResourceVo getInfo(String id) {
+    public ResourceVo getInfo(Long id) {
         Resource exist=new Resource();
         exist.setId(id);
         if (!resourceRepository.exists(Example.of(exist))) {
@@ -201,16 +194,10 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
         resource.setSort(resourceRepository.findMaxSort() + 1);
         resourceRepository.save(resource);
         User user=userRepository.findByAccount_Username(username);
-        RoleResource roleResource = new RoleResource();
-        roleResource.setResource(resource);
-        for (RoleUser roleUser : user.getRoles()) {
-            roleResource.setRole(roleUser.getRole());
-            roleResourceRepository.save(roleResource);
-        }
-        // todo 优化魔法值
         Role role = roleRepository.findByCode("cjgly");
-        roleResource.setRole(role);
-        roleResourceRepository.save(roleResource);
+        role.getResources().add(resource);
+        role.getUsers().add(user);
+        roleRepository.save(role);
     }
 
 
@@ -223,7 +210,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
      * @since 1.0.0
      */
     @Override
-    public void update(String id, ResourceInfo resourceInfo) {
+    public void update(Long id, ResourceInfo resourceInfo) {
         Resource resource = find(id);
         BeanUtils.copyProperties(resourceInfo, resource);
         if (!resourceInfo.getParentId().equals(resource.getParent())){
@@ -244,7 +231,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
      * @since 1.0.0
      */
     @Override
-    public void deleteResource(String id) {
+    public void deleteResource(Long id) {
         List<Resource> resources = resourceRepository.findByParent_Id(id);
         if (resources.size() > 0) {
             throw new CheckedException(ResultEnum.RESOURCE_HAS_CHILDREN);
@@ -265,10 +252,11 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, String> imple
      * @return
      */
     @Override
-    public ResourceInfo getRoleTree(String id) {
+    public ResourceInfo getRoleTree(Long id) {
         Resource resource = resourceRepository.findByName("根节点");
-        ResourceInfo resourceInfo = resource.roleToTree(roleResourceRepository.findIdsByRid(id));
-        return resourceInfo;
+    //    ResourceInfo resourceInfo = resource.roleToTree(roleResourceRepository.findIdsByRid(id));
+     //   return resourceInfo;
+        return null;
     }
 
     @Override
