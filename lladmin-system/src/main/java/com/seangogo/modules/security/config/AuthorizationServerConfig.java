@@ -1,0 +1,124 @@
+package com.seangogo.modules.security.config;
+
+import com.seangogo.modules.security.dto.JwtClientsProperties;
+import com.seangogo.modules.security.dto.SecurityProperties;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 认证服务器配置
+ *
+ * @author sean
+ */
+@Configuration
+@EnableAuthorizationServer
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+//    @Autowired
+//    private AuthenticationManager authenticationManager;\
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserDetailsService userDetailsService;
+
+    private final TokenStore tokenStore;
+
+    private final JwtAccessTokenConverter jwtAccessTokenConverter;
+
+    private final TokenEnhancer jwtTokenEnhancer;
+
+    private final SecurityProperties securityProperties;
+
+    private final AuthenticationProvider daoAuhthenticationOauthProvider;
+
+    @Autowired
+    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, @Qualifier("jwtTokenStore") TokenStore tokenStore, JwtAccessTokenConverter jwtAccessTokenConverter, TokenEnhancer jwtTokenEnhancer, SecurityProperties securityProperties, @Qualifier("daoAuhthenticationOauthProvider") AuthenticationProvider daoAuhthenticationOauthProvider) {
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
+        this.tokenStore = tokenStore;
+        this.jwtAccessTokenConverter = jwtAccessTokenConverter;
+        this.jwtTokenEnhancer = jwtTokenEnhancer;
+        this.securityProperties = securityProperties;
+        this.daoAuhthenticationOauthProvider = daoAuhthenticationOauthProvider;
+    }
+
+    @Bean(name = "daoAuhthenticationOauthProvider")
+    public AuthenticationProvider daoAuhthenticationOauthProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        return daoAuthenticationProvider;
+    }
+
+    /**
+     * 认证及token配置
+     */
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        endpoints.tokenStore(tokenStore)
+                .userDetailsService(userDetailsService)
+                .authenticationManager(authentication -> daoAuhthenticationOauthProvider.authenticate(authentication));
+        if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
+            TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+            List<TokenEnhancer> enhancers = new ArrayList<>();
+            enhancers.add(jwtTokenEnhancer);
+            enhancers.add(jwtAccessTokenConverter);
+            enhancerChain.setTokenEnhancers(enhancers);
+            endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter);
+        }
+
+    }
+
+    /**
+     * tokenKey的访问权限表达式配置
+     */
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        security.tokenKeyAccess("permitAll()");
+        //.checkTokenAccess("isAuthenticated()");
+        security.allowFormAuthenticationForClients();
+    }
+
+
+    /**
+     * 客户端配置
+     */
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
+        if (ArrayUtils.isNotEmpty(securityProperties.getClients())) {
+            for (JwtClientsProperties client : securityProperties.getClients()) {
+                builder.withClient(client.getClientId())
+                        .secret(client.getClientSecret())
+                        .resourceIds("auth")
+                        .authorizedGrantTypes("refresh_token", "authorization_code", "password", "implicit")
+                        .accessTokenValiditySeconds(client.getAccessTokenValidateSeconds())
+                        .refreshTokenValiditySeconds(client.getAccessTokenRefreshSeconds())
+                        .scopes("all");
+                // todo otter 只有读的权限，日后改为配置
+            }
+        }
+    }
+
+}
