@@ -32,12 +32,12 @@ public class StateResult {
     }
 
 
-    public StateResult(String code, String description) {
+    private StateResult(String code, String description) {
         this.statusCode = code;
         this.statusMessage = description;
     }
 
-    public StateResult(ResultEnum resultEnum) {
+    private StateResult(ResultEnum resultEnum) {
         this.statusCode = resultEnum.getCode();
         this.statusMessage = resultEnum.getMessage();
     }
