@@ -60,15 +60,14 @@ public abstract class BaseEntity<U extends Serializable> implements Serializable
      * 创建时间
      */
     @CreationTimestamp
-    @Column(name = "create_time")
-    protected Timestamp createTime;
+    @Column(name = "created_date")
+    protected Timestamp createdTime;
     /**
      * 修改时间
      */
     @LastModifiedDate
-    @Temporal(TIMESTAMP)
-    @Column(name = "updated_dt")
-    protected Date updatedDate;
+    @Column(name = "updated_time")
+    protected Timestamp updatedTime;
 
     /**
      * 删除标志 0 - 正常 1 - 删除

@@ -1,15 +1,16 @@
 package com.seangogo.modules.system.rest;
 
 import com.seangogo.common.utils.DataResult;
+import com.seangogo.common.utils.StateResult;
+import com.seangogo.modules.security.dto.ResourceDto;
 import com.seangogo.modules.security.utils.JwtTokenUtil;
+import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.service.ResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 
 
 /**
@@ -19,11 +20,8 @@ import javax.annotation.Resource;
 @RequestMapping("resource")
 public class ResourceController {
 
-    @Resource
+    @Autowired
     private ResourceService resourceService;
-
-    @Resource
-    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * 获取资源树
@@ -34,6 +32,34 @@ public class ResourceController {
     @PreAuthorize("hasAnyAuthority('resource','role')")
     public DataResult findTree(@RequestParam(required = false) String name) {
         return DataResult.success(resourceService.getAllTree(name));
+    }
+
+    /**
+     * 创建资源
+     *
+     * @param dto dto
+     * @return success
+     */
+    @PostMapping
+    @PreAuthorize("hasRole('cjyly')")
+    public StateResult save(@Validated @RequestBody ResourceDto dto) {
+        resourceService.create(dto);
+        return StateResult.success();
+    }
+
+    /**
+     * 修改资源
+     *
+     * @param id  唯一标识
+     * @param dto dto
+     * @return success
+     */
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('resource')")
+    public StateResult update(@PathVariable Long id,
+                              @RequestBody ResourceDto dto) {
+        resourceService.update(id, dto);
+        return StateResult.success();
     }
 
     /**
@@ -60,18 +86,7 @@ public class ResourceController {
 //        return resourceService.getRoleTree(id);
 //    }
 //
-//    /**
-//     * 创建资源
-//     *
-//     * @param resourceVo vo
-//     * @return success
-//     */
-//    @PostMapping
-//    @PreAuthorize("hasAuthority('resource')")
-//    public StateResult save(@RequestBody ResourceVo resourceVo){
-//        resourceService.create(resourceVo, jwtTokenUtil.getUserName());
-//        return StateResult.success();
-//    }
+
 //
 //    /**
 //     * 修改资源

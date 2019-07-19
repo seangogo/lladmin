@@ -2,6 +2,7 @@ package com.seangogo.modules.system.repository;
 
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.modules.system.domain.Resource;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,4 +21,12 @@ public interface ResourceRepository extends BaseRepository<Resource, Long> {
      * @return 所有资源
      */
     List<Resource> findByNameLikeAndParentOrderBySort(String name, Resource root);
+
+    /**
+     * 查找排序
+     *
+     * @return 最大排序数
+     */
+    @Query("select max (r.sort) from Resource r ")
+    int findMaxSort();
 }

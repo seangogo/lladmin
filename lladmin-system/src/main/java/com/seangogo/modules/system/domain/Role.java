@@ -71,14 +71,6 @@ public class Role extends BaseEntity<String> {
     @JoinTable(name = "system_roles_resources", joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
     private Set<Resource> resources;
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                ", name='" + name + '\'' +
-                ", remark='" + remark + '\'' +
-                ", createDateTime=" + createTime +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {

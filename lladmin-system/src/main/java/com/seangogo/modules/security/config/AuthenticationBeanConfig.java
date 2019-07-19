@@ -2,7 +2,7 @@ package com.seangogo.modules.security.config;
 
 import com.seangogo.base.jpa.AuditorAwareImpl;
 import com.seangogo.modules.security.dto.SecurityProperties;
-import com.seangogo.modules.security.service.MyUserDetailsService;
+import com.seangogo.modules.security.service.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +42,7 @@ public class AuthenticationBeanConfig {
     @Bean
     @ConditionalOnMissingBean(UserDetailsService.class)
     public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService();
+        return new UserDetailsServiceImpl();
     }
 
     /**

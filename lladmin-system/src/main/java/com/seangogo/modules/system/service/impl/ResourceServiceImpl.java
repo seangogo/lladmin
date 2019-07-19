@@ -2,7 +2,7 @@ package com.seangogo.modules.system.service.impl;
 
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.base.jpa.BaseServiceImpl;
-import com.seangogo.common.utils.DataResult;
+import com.seangogo.modules.security.dto.ResourceDto;
 import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.domain.User;
@@ -80,6 +80,49 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, Long> impleme
             return dto;
         }
         return toTree(resources, root);
+    }
+
+    @Override
+    public void create(ResourceDto dto) {
+        Resource parent = find(dto.getParentId());
+        //编码检查去除
+//        Resource examine = resourceRepository.findByCode(resourceVo.getCode());
+//        if (examine != null) {
+//            throw new CheckedException(ResultEnum.DATA_EXIST);
+//        }
+        Resource resource = new Resource();
+        resource.setParent(parent);
+        resource.setLevelCode(parent.getLevelCode() + "-" + resource.getCode());
+        resource.setSort(resourceRepository.findMaxSort() + 1);
+        resource.setCode(dto.getCode());
+        resource.setIcon(dto.getIcon());
+        resource.setName(dto.getName());
+        resource.setRemark(dto.getRemark());
+        resource.setType(dto.getType());
+        resourceRepository.save(resource);
+        // 绑定超级管理员
+        Role role = roleRepository.findByCode("cjgly");
+        role.getResources().add(resource);
+        roleRepository.save(role);
+    }
+
+    /**
+     * 修改资源
+     *
+     * @param id  唯一标识
+     * @param dto dto
+     */
+    @Override
+    public void update(Long id, ResourceDto dto) {
+        Resource resource = find(id);
+        if (!dto.getParentId().equals(resource.getParent().getId())) {
+            Resource newParent = find(dto.getParentId());
+            String newLeaveCode = newParent.getLevelCode() + "-" + resource.getCode();
+            resource.setLevelCode(newLeaveCode);
+            resource.setParent(newParent);
+        }
+        BeanUtils.copyProperties(dto, resource);
+        resourceRepository.save(resource);
     }
 
     /**

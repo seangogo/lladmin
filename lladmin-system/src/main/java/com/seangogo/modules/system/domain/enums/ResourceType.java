@@ -19,5 +19,9 @@ public enum ResourceType {
     /**
      * 路由
      */
-    ROUTE
+    ROUTE,
+    /**
+     * 根节点
+     */
+    ROOT
 }

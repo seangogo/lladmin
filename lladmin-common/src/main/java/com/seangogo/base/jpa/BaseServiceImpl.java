@@ -1,12 +1,15 @@
 package com.seangogo.base.jpa;
 
 
+import com.seangogo.base.exception.CheckedException;
+import com.seangogo.common.enums.ResultEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author seangogo
@@ -18,8 +21,12 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
 
     @Override
     public T find(ID id) {
-        T t = getBaseDao().getOne(id);
-        return t;
+        Optional<T> t = getBaseDao().findById(id);
+        if (t.isPresent()) {
+            return t.get();
+        } else {
+            throw new CheckedException(ResultEnum.DATA_NOT_EXIST);
+        }
     }
 
     @Override

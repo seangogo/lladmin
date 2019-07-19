@@ -2,10 +2,12 @@ package com.seangogo.modules.system.service;
 
 import com.seangogo.base.jpa.BaseService;
 import com.seangogo.common.utils.DataResult;
+import com.seangogo.modules.security.dto.ResourceDto;
 import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.User;
 import com.seangogo.modules.system.service.dto.ResourceDTO;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -28,4 +30,20 @@ public interface ResourceService extends BaseService<Resource, Long> {
     @Cacheable(key = "'getAllTree:' + #p0")
     ResourceDTO getAllTree(String name);
 
+    /**
+     * 创建资源
+     *
+     * @param resource vo
+     */
+    @CacheEvict(value = "resource", allEntries = true)
+    void create(ResourceDto resource);
+
+    /**
+     * 修改资源
+     *
+     * @param id  唯一标识
+     * @param dto dto
+     */
+    @CacheEvict(value = "resource", allEntries = true)
+    void update(Long id, ResourceDto dto);
 }

@@ -35,9 +35,9 @@ public class SecurityResourceServerConfig extends ResourceServerConfigurerAdapte
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/oauth/**", "/auth/active/**", "/", "/auth/vCode"
+                .antMatchers("/oauth/**", "/", "/auth/vCode"
                         , "/static/**", "/**.**", "/druid/**", "/admin/health",
-                        "/auth/**/isUse/**", "/auth/common/**", "/auth/account/sendCode", "/auth/generator/**",
+                        "/auth/common/**", "/auth/generator/**",
                         "/auth/user/resetPassword").permitAll()
                 .anyRequest().authenticated();
 

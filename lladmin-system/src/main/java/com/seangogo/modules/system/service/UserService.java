@@ -37,6 +37,7 @@ public interface UserService extends BaseService<User, Long> {
     @Cacheable(key = "'findUserInfo:'+#p0")
     AuthInfo findUserInfo(String userName);
 
+    @Cacheable(key = "'getAuthInfo:'+#p0")
     MenuInfo getAuthInfo(List<Resource> resources, Resource parent);
 
 }

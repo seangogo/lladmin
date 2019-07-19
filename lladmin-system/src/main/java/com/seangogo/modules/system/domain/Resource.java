@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,6 @@ public class Resource extends BaseEntity<String> {
     /**
      * 资源类型
      */
-    @NotNull
     private ResourceType type;
 
     /**
@@ -85,5 +85,4 @@ public class Resource extends BaseEntity<String> {
     @JsonIgnore
     @ManyToMany(mappedBy = "resources")
     private Set<Role> roles;
-
 }

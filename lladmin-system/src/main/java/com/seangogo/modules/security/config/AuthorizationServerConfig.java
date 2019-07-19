@@ -35,32 +35,30 @@ import java.util.List;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 //    @Autowired
-//    private AuthenticationManager authenticationManager;\
-
-    private final PasswordEncoder passwordEncoder;
-
-    private final UserDetailsService userDetailsService;
-
-    private final TokenStore tokenStore;
-
-    private final JwtAccessTokenConverter jwtAccessTokenConverter;
-
-    private final TokenEnhancer jwtTokenEnhancer;
-
-    private final SecurityProperties securityProperties;
-
-    private final AuthenticationProvider daoAuhthenticationOauthProvider;
+//    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, @Qualifier("jwtTokenStore") TokenStore tokenStore, JwtAccessTokenConverter jwtAccessTokenConverter, TokenEnhancer jwtTokenEnhancer, SecurityProperties securityProperties, @Qualifier("daoAuhthenticationOauthProvider") AuthenticationProvider daoAuhthenticationOauthProvider) {
-        this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
-        this.tokenStore = tokenStore;
-        this.jwtAccessTokenConverter = jwtAccessTokenConverter;
-        this.jwtTokenEnhancer = jwtTokenEnhancer;
-        this.securityProperties = securityProperties;
-        this.daoAuhthenticationOauthProvider = daoAuhthenticationOauthProvider;
-    }
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Qualifier("jwtTokenStore")
+    @Autowired
+    private TokenStore tokenStore;
+
+    @Autowired(required = false)
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+
+    @Autowired(required = false)
+    private TokenEnhancer jwtTokenEnhancer;
+
+    @Autowired
+    private SecurityProperties securityProperties;
+
+    @Autowired
+    @Qualifier("daoAuhthenticationOauthProvider")
+    private AuthenticationProvider daoAuhthenticationOauthProvider;
 
     @Bean(name = "daoAuhthenticationOauthProvider")
     public AuthenticationProvider daoAuhthenticationOauthProvider() {

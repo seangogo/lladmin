@@ -6,6 +6,7 @@ import com.seangogo.base.exception.EntityExistException;
 import com.seangogo.base.exception.EntityNotFoundException;
 import com.seangogo.common.utils.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,6 +41,23 @@ public class GlobalExceptionHandler {
         result.put("message", ex.getMessage());
         return result;
     }
+
+    /**
+     * 违反jpa 约束异常
+     *
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.MULTIPLE_CHOICES)
+    public Map<String, Object> checkedException(ConstraintViolationException ex) {
+        Map<String, Object> result = new HashMap<>(2);
+        result.put("code", ex.getErrorCode());
+        result.put("message", ex.getMessage());
+        return result;
+    }
+
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody

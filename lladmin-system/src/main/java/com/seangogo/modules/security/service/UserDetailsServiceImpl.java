@@ -24,7 +24,7 @@ import java.util.Optional;
 @Slf4j
 @Component
 @Transactional
-public class MyUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Resource
     private UserService userService;
@@ -56,7 +56,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 Optional.ofNullable(user.getJob()).map(Job::getName).orElse(null),
                 resourceService.userToGrantedAuthorities(user),
                 user.isLocked(),
-                user.getCreateTime(),
-                user.getUpdatedDate());
+                user.getCreatedTime(),
+                user.getUpdatedTime());
     }
 }
