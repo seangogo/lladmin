@@ -1,14 +1,13 @@
 package com.seangogo.modules.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * 表的数据信息
@@ -50,13 +49,33 @@ public class TableInfo extends BaseEntity<String> {
     /**
      * 建表sql
      **/
+    @Column(length = 4000)
     private String createSql;
 
     /**
      * 所属数据库
      **/
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "database_id")
     private DataBase dataBase;
 
+    @OneToMany(mappedBy = "tableInfo")
+    @JsonIgnore
+    private Set<FieldInfo> fields;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof TableInfo)) {
+            return false;
+        }
+        return super.getId() != null && super.getId().equals(((TableInfo) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 2023;
+    }
 }

@@ -1,13 +1,13 @@
 package com.seangogo.modules.system.domain;
 
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import java.util.Set;
 
 /**
  * 数据库
@@ -19,6 +19,16 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Table(name = "generator_database")
+@NamedEntityGraph(
+        name = "database-table-field",
+        attributeNodes = @NamedAttributeNode(value = "tables", subgraph = "table-subgraph"),
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "table-subgraph",
+                        attributeNodes = @NamedAttributeNode("fields")
+                )
+        }
+)
 public class DataBase extends BaseEntity<String> {
 
     private String alias;
@@ -32,5 +42,23 @@ public class DataBase extends BaseEntity<String> {
     @JsonIgnore
     private String password;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "dataBase")
+    private Set<TableInfo> tables;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DataBase)) {
+            return false;
+        }
+        return super.getId() != null && super.getId().equals(((DataBase) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 2022;
+    }
 }

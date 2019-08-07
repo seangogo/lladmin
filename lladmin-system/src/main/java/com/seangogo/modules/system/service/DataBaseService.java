@@ -19,5 +19,12 @@ public interface DataBaseService extends BaseService<DataBase, Long> {
      * @return success
      */
     DataResult createTable(DataBaseDto dto);
+
+    /**
+     * 获取数据库-表-字段 树
+     *
+     * @return tree
+     */
+    DataResult getTree();
 }
 
