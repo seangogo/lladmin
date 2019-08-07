@@ -1,7 +1,10 @@
 package com.seangogo.modules.system.repository;
 
 import com.seangogo.base.jpa.BaseRepository;
+import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.Role;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Set;
@@ -37,4 +40,9 @@ public interface RoleRepository extends BaseRepository<Role, Long> {
      * @return 角色
      */
     List<Role> findByLevelCodeLikeOrderByCreatedTime(String levelCode);
+
+    @EntityGraph(value = "role-resource-graph",
+            type = EntityGraph.EntityGraphType.FETCH)
+    @Query("SELECT r FROM Role r where r in ?1")
+    Set<Role> findByRoles(Set<Role> roles);
 }

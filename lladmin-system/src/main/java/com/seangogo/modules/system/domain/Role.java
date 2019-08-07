@@ -21,6 +21,12 @@ import java.util.Set;
 @Table(name = "system_role")
 @Getter
 @Setter
+@NamedEntityGraph(
+        name = "role-resource-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "resources")
+        }
+)
 public class Role extends BaseEntity<String> {
 
     /**

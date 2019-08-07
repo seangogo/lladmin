@@ -2,7 +2,7 @@ package com.seangogo.modules.system.service.impl;
 
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.base.jpa.BaseServiceImpl;
-import com.seangogo.modules.security.dto.ResourceDto;
+import com.seangogo.modules.system.service.vo.ResourceDto;
 import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.domain.User;

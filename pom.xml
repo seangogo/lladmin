@@ -73,11 +73,11 @@
             <version>${hutool.version}</version>
         </dependency>
         <!--监控sql日志-->
-        <dependency>
-            <groupId>org.bgee.log4jdbc-log4j2</groupId>
-            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
-            <version>${log4jdbc.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.bgee.log4jdbc-log4j2</groupId>-->
+        <!--<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>-->
+        <!--<version>${log4jdbc.version}</version>-->
+        <!--</dependency>-->
         <!--数据库相关-->
         <dependency>
             <groupId>mysql</groupId>

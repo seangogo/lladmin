@@ -1,11 +1,10 @@
 package com.seangogo.modules.system.service;
 
 import com.seangogo.base.jpa.BaseService;
-import com.seangogo.common.utils.DataResult;
-import com.seangogo.modules.security.dto.ResourceDto;
 import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.User;
 import com.seangogo.modules.system.service.dto.ResourceDTO;
+import com.seangogo.modules.system.service.vo.ResourceDto;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

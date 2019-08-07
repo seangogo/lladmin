@@ -4,22 +4,28 @@ import com.seangogo.base.exception.CheckedException;
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.base.jpa.BaseServiceImpl;
 import com.seangogo.common.enums.ResultEnum;
+import com.seangogo.common.utils.PageResult;
 import com.seangogo.common.utils.ValidationUtil;
+import com.seangogo.modules.security.utils.JwtTokenUtil;
 import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.domain.User;
 import com.seangogo.modules.system.domain.enums.ResourceType;
+import com.seangogo.modules.system.repository.RoleRepository;
 import com.seangogo.modules.system.repository.UserRepository;
 import com.seangogo.modules.system.service.UserService;
-import com.seangogo.modules.system.service.dto.UserDTO;
-import com.seangogo.modules.system.service.mapper.UserMapper;
+import com.seangogo.modules.system.service.dto.PageQueryDto;
 import com.seangogo.modules.system.service.vo.AuthInfo;
 import com.seangogo.modules.system.service.vo.MenuInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,7 +44,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     private UserRepository userRepository;
 
     @Autowired
-    private UserMapper userMapper;
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public BaseRepository<User, Long> getBaseDao() {
@@ -80,7 +89,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         authInfo.setAvatar(user.getAvatar());
         authInfo.setPhone(user.getPhone());
         authInfo.setEmail(user.getEmail());
-        Set<Role> roles = user.getRoles();
+        Set<Role> roles = roleRepository.findByRoles(user.getRoles());
         Set<Resource> resources = roles.stream().flatMap(role -> role.getResources().stream()).collect(Collectors.toSet());
         Optional<Resource> root = resources.stream().min(Comparator.comparing(Resource::getSort));
         if (!root.isPresent()) {
@@ -123,5 +132,34 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         }
         menuInfo.setChildren(children);
         return menuInfo;
+    }
+
+    @Override
+    public PageResult<User> page(Pageable pageable, PageQueryDto.UserQueryDto dto) {
+        String orgCode = jwtTokenUtil.getOrgCode();
+        Specification<User> querySpecifi = (root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            //  predicates.add(criteriaBuilder.notEqual(root.get("account").get("username").as(String.class), "Sysadmin"));
+            if (null != dto.getRealName()) {
+                predicates.add(criteriaBuilder.like(root.get("realName").as(String.class), "%" + dto.getRealName() + "%"));
+            }
+            if (null != dto.getEmail()) {
+                predicates.add(criteriaBuilder.like(root.get("email").as(String.class), "%" + dto.getEmail() + "%"));
+            }
+            if (null != dto.getPhone()) {
+                predicates.add(criteriaBuilder.like(root.get("phone").as(String.class), "%" + dto.getPhone() + "%"));
+            }
+            if (null != dto.getUsername()) {
+                predicates.add(criteriaBuilder.like(root.get("account").get("username").as(String.class), "%" + dto.getUsername() + "%"));
+            }
+//            if (null != dto.getOrgCode() && dto.getOrgCode().startsWith(orgCode)) {
+//                predicates.add(criteriaBuilder.like(orgJoin.get("levelCode").as(String.class), orgCode + "%"));
+//            } else {
+//                predicates.add(criteriaBuilder.like(orgJoin.get("levelCode").as(String.class), org + "%"));
+//            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+        Page<User> page = userRepository.findAll(querySpecifi, pageable);
+        return PageResult.getPageVo(page);
     }
 }

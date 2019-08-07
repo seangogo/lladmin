@@ -1,6 +1,7 @@
 package com.seangogo.modules.system.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seangogo.base.jpa.BaseEntity;
 import com.seangogo.modules.system.domain.enums.Sex;
 import lombok.Getter;
@@ -26,6 +27,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Setter
 @Where(clause = "del_flg = 0")
 public class User extends BaseEntity<String> {
+    /**
+     * 昵称
+     */
+    private String nickname;
 
     /**
      * 账户名
@@ -82,14 +87,15 @@ public class User extends BaseEntity<String> {
      */
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "system_users_roles", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "dept_id")
     private Dept dept;
 

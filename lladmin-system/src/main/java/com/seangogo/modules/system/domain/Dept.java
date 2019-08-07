@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Set;
 
 /**
@@ -32,9 +32,6 @@ public class Dept extends BaseEntity<String> {
     @NotBlank
     private String name;
 
-    @NotNull
-    private Boolean enabled;
-
     /**
      * 上级部门
      */
@@ -42,14 +39,24 @@ public class Dept extends BaseEntity<String> {
     @NotNull
     private Long pid;
 
+    /**
+     * 可用
+     */
+    @NotNull
+    private Boolean enabled;
+
+    /**
+     * 层级编码
+     */
+    @Column(unique = true)
+    private String levelCode;
+
+
     @JsonIgnore
     @ManyToMany(mappedBy = "depts")
     private Set<Role> roles;
 
-    @Column(name = "create_time")
-    @CreationTimestamp
-    private Timestamp createTime;
-
     public @interface Update {
     }
+
 }

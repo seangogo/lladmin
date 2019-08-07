@@ -1,4 +1,4 @@
-package com.seangogo.modules.security.dto;
+package com.seangogo.modules.system.service.vo;
 
 import com.seangogo.modules.system.domain.enums.ResourceType;
 import lombok.Getter;

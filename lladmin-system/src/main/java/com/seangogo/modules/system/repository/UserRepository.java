@@ -2,6 +2,7 @@ package com.seangogo.modules.system.repository;
 
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.modules.system.domain.User;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * 用户数据库操作类
@@ -17,6 +18,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
      * @param username 账户名
      * @return entity
      */
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles")
     User findByUsername(String username);
 
     /**

@@ -2,9 +2,7 @@ package com.seangogo.modules.system.rest;
 
 import com.seangogo.common.utils.DataResult;
 import com.seangogo.common.utils.StateResult;
-import com.seangogo.modules.security.dto.ResourceDto;
-import com.seangogo.modules.security.utils.JwtTokenUtil;
-import com.seangogo.modules.system.domain.Resource;
+import com.seangogo.modules.system.service.vo.ResourceDto;
 import com.seangogo.modules.system.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
+ * 资源
  * @author seangogo
  */
 @RestController

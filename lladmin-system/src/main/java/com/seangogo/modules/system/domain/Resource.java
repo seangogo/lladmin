@@ -85,4 +85,20 @@ public class Resource extends BaseEntity<String> {
     @JsonIgnore
     @ManyToMany(mappedBy = "resources")
     private Set<Role> roles;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Resource)) {
+            return false;
+        }
+        return super.getId() != null && super.getId().equals(((Resource) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 2021;
+    }
 }
