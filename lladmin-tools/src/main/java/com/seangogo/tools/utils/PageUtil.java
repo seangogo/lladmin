@@ -36,33 +36,4 @@ public class PageUtil extends cn.hutool.core.util.PageUtil {
         }
     }
 
-    /**
-     * Page 数据处理，预防redis反序列化报错
-     *
-     * @param page
-     * @return
-     */
-    public static Map toPage(Page page) {
-        Map map = new HashMap();
-
-        map.put("content", page.getContent());
-        map.put("totalElements", page.getTotalElements());
-
-        return map;
-    }
-
-    /**
-     * @param object
-     * @param totalElements
-     * @return
-     */
-    public static Map toPage(Object object, Object totalElements) {
-        Map map = new HashMap();
-
-        map.put("content", object);
-        map.put("totalElements", totalElements);
-
-        return map;
-    }
-
 }

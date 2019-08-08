@@ -16,7 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageResult<T> { //todo 重构
+
+    /**
+     * 分页数据
+     **/
     List<T> list;
+
+    /**
+     * 分页构造器
+     **/
     Pagination pagination;
 
     public static PageResult getPageVo(Page<?> page) {
@@ -33,10 +41,11 @@ public class PageResult<T> { //todo 重构
         return pageResult;
     }
 
-    @Data
+    @Setter
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Pagination {
+    private static class Pagination {
         private int current;
         private int pageSize;
         private long total;

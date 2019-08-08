@@ -55,7 +55,7 @@ public class EncryptUtils {
     }
 
 
-    public static byte[] hex2byte(byte[] b) {
+    private static byte[] hex2byte(byte[] b) {
         if ((b.length % 2) != 0) {
             throw new IllegalArgumentException("长度不是偶数");
         }

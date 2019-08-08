@@ -12,5 +12,11 @@ import org.springframework.cache.annotation.CacheConfig;
 @CacheConfig(cacheNames = "dept")
 public interface DeptService extends BaseService<Dept, Long> {
 
+    /**
+     * 获取部门树形结构
+     *
+     * @param name 部门名称
+     * @return 结果集
+     */
     DataResult getTree(String name);
 }

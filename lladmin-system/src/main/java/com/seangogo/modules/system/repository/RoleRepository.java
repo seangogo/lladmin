@@ -1,7 +1,6 @@
 package com.seangogo.modules.system.repository;
 
 import com.seangogo.base.jpa.BaseRepository;
-import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.Role;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;

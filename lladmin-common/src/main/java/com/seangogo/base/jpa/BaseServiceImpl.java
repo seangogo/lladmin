@@ -17,6 +17,11 @@ import java.util.Optional;
 @Transactional
 public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable> implements BaseService<T, ID> {
 
+    /**
+     * 获取基础数据仓库类
+     *
+     * @return 基础数据仓库类
+     */
     public abstract BaseRepository<T, ID> getBaseDao();
 
     @Override

@@ -2,6 +2,7 @@ package com.seangogo.modules.system.service.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@ToString
 public class RoleTreeDTO {
     /**
      * 子节点

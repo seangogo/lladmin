@@ -5,6 +5,7 @@ import com.seangogo.modules.system.domain.enums.ResourceType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,8 +17,8 @@ import java.util.List;
  * @author seang
  * @date 2019/7/3 11:28
  */
-@Getter
-@Setter
+@Data
+@ToString
 public class ResourceDTO implements Serializable {
 
     private Long id;
