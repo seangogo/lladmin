@@ -3,10 +3,12 @@ package com.seangogo.modules.system.domain;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -29,7 +31,10 @@ import java.util.Set;
                 )
         }
 )
-public class DataBase extends BaseEntity<String> {
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class DataBase extends BaseEntity<String> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String alias;
 

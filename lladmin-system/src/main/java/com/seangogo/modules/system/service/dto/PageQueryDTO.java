@@ -4,11 +4,12 @@ import lombok.*;
 
 /**
  * 分页查询参数集合类
+ * @author seang
  */
-public class PageQueryDto {
+public class PageQueryDTO {
 
     /**
-     * 品牌
+     * 用户
      */
     @Getter
     @Setter
@@ -21,5 +22,14 @@ public class PageQueryDto {
         private String username;
         private String orgCode;
         private Long roleId;
+    }
+
+    /**
+     * 数据库表
+     */
+    @Data
+    public static class TableQueryDto {
+        private String tableName;
+        private Long dataBaseId;
     }
 }

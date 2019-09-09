@@ -56,7 +56,8 @@ public enum ResultEnum {
     RETRY_CAMPAIGN_TASK_ITEM_FAILURE("16001026", "重试一个campagin任务明细失败"),
     PAUSE_CAMPAIGN_TASK_FAILURE("16001027", "暂停一个campagin任务失败"),
     PAUSE_CAMPAIGN_TASK_ITEM_FAILURE("16001028", "暂停一个campagin任务明细失败"),
-    EDIT_SOFTWARE_VERSION_ERROR("16001029", "修改软件版本失败"),;
+    EDIT_SOFTWARE_VERSION_ERROR("16001029", "修改软件版本失败"),
+    ENVIRONMENT_NOT_ALLOW_GENERATION("16001029", "此环境不允许生成代码！"),;
 
     private String code;
 

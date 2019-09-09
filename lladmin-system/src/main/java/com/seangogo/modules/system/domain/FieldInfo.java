@@ -1,5 +1,7 @@
 package com.seangogo.modules.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +28,7 @@ import javax.persistence.*;
                 )
         }
 )
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class FieldInfo extends BaseEntity<String> {
 
     /**
@@ -67,10 +70,11 @@ public class FieldInfo extends BaseEntity<String> {
     /**
      * 是否在列表显示
      **/
-    private String columnShow;
+    private boolean columnShow;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "table_id")
+    @JsonBackReference
     private TableInfo tableInfo;
 
     @Override

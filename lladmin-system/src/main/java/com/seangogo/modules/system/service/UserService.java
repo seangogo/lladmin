@@ -4,7 +4,7 @@ import com.seangogo.base.jpa.BaseService;
 import com.seangogo.common.utils.PageResult;
 import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.User;
-import com.seangogo.modules.system.service.dto.PageQueryDto;
+import com.seangogo.modules.system.service.dto.PageQueryDTO;
 import com.seangogo.modules.system.service.vo.AuthInfo;
 import com.seangogo.modules.system.service.vo.MenuInfo;
 import org.springframework.cache.annotation.CacheConfig;
@@ -43,5 +43,5 @@ public interface UserService extends BaseService<User, Long> {
     @Cacheable(key = "'getAuthInfo:'+#p0")
     MenuInfo getAuthInfo(List<Resource> resources, Resource parent);
 
-    PageResult<User> page(Pageable pageable, PageQueryDto.UserQueryDto dto);
+    PageResult<User> page(Pageable pageable, PageQueryDTO.UserQueryDto dto);
 }

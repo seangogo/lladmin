@@ -1,11 +1,15 @@
 package com.seangogo.modules.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -19,7 +23,16 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "generator_table_info")
-public class TableInfo extends BaseEntity<String> {
+@NamedEntityGraph(
+        name = "table-field-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "fields"),
+                @NamedAttributeNode(value = "dataBase")
+        }
+)
+public class TableInfo extends BaseEntity<String> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 表名称
@@ -29,6 +42,7 @@ public class TableInfo extends BaseEntity<String> {
     /**
      * 表创建日期
      **/
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -60,7 +74,7 @@ public class TableInfo extends BaseEntity<String> {
     private DataBase dataBase;
 
     @OneToMany(mappedBy = "tableInfo")
-    @JsonIgnore
+    @JsonManagedReference
     private Set<FieldInfo> fields;
 
     @Override

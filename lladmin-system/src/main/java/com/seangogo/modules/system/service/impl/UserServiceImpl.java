@@ -14,7 +14,7 @@ import com.seangogo.modules.system.domain.enums.ResourceType;
 import com.seangogo.modules.system.repository.RoleRepository;
 import com.seangogo.modules.system.repository.UserRepository;
 import com.seangogo.modules.system.service.UserService;
-import com.seangogo.modules.system.service.dto.PageQueryDto;
+import com.seangogo.modules.system.service.dto.PageQueryDTO;
 import com.seangogo.modules.system.service.vo.AuthInfo;
 import com.seangogo.modules.system.service.vo.MenuInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +135,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     }
 
     @Override
-    public PageResult<User> page(Pageable pageable, PageQueryDto.UserQueryDto dto) {
+    public PageResult<User> page(Pageable pageable, PageQueryDTO.UserQueryDto dto) {
         String orgCode = jwtTokenUtil.getOrgCode();
         Specification<User> querySpecifi = (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

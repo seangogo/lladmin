@@ -14,19 +14,19 @@ import java.util.List;
 @Setter
 public class DataBaseTreeDto {
 
-    private Long id;
+    private String id;
 
     private String label;
 
-    private List<DataBaseTreeDto> children = new ArrayList<>();
+    private List<DataBaseTreeDto> children;
 
-    public DataBaseTreeDto(Long id, String label, List<DataBaseTreeDto> children) {
+    public DataBaseTreeDto(String id, String label, List<DataBaseTreeDto> children) {
         this.id = id;
         this.label = label;
         this.children = children;
     }
 
-    public DataBaseTreeDto(Long id, String label) {
+    public DataBaseTreeDto(String id, String label) {
         this.id = id;
         this.label = label;
     }
