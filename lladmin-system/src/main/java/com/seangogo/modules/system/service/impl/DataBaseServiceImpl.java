@@ -103,6 +103,7 @@ public class DataBaseServiceImpl extends BaseServiceImpl<DataBase, Long> impleme
         }
         fieldInfoRepository.saveAll(fields);
         return DataResult.success(dataBaseRepository.findAll());
+
     }
 
     /**
