@@ -3,6 +3,7 @@ package com.seangogo.modules.system.service;
 import com.seangogo.base.jpa.BaseService;
 import com.seangogo.common.utils.DataResult;
 import com.seangogo.common.utils.PageResult;
+import com.seangogo.common.utils.StateResult;
 import com.seangogo.modules.system.domain.DataBase;
 import com.seangogo.modules.system.domain.FieldInfo;
 import com.seangogo.modules.system.service.dto.PageQueryDTO;
@@ -49,8 +50,16 @@ public interface DataBaseService extends BaseService<DataBase, Long> {
      * 生成代码
      * @param fields 字段信息
      * @param tableName 表名称
-     * @param request
+     * @param response HttpServletResponse
+     * @param request HttpServletRequest
      */
     void generator(List<FieldInfo> fields, String tableName, HttpServletResponse response, HttpServletRequest request) throws IOException;
+
+    /**
+     * 删除数据库
+     * @param id 数据库主键
+     * @return 结果集
+     */
+    StateResult deleteModel(Long id);
 }
 

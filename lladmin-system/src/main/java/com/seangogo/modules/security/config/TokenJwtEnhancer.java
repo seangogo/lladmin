@@ -17,7 +17,8 @@ public class TokenJwtEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         Map<String, Object> info = new HashMap(4);
         JwtUser user = (JwtUser) authentication.getPrincipal();
-        //info.put("orgCode",user.getOrg().getLevelCode());
+        // 部门编码
+        info.put("deptLevelCode",user.getDept());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
         return accessToken;
     }

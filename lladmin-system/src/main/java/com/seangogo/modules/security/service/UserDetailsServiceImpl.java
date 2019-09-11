@@ -52,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getAvatar(),
                 user.getEmail(),
                 user.getPhone(),
-                Optional.ofNullable(user.getDept()).map(Dept::getName).orElse(null),
+                Optional.ofNullable(user.getDept()).map(Dept::getLevelCode).orElse(null),
                 Optional.ofNullable(user.getJob()).map(Job::getName).orElse(null),
                 resourceService.userToGrantedAuthorities(user),
                 user.isLocked(),

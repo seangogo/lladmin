@@ -6,6 +6,9 @@ import com.seangogo.modules.system.domain.User;
 import com.seangogo.modules.system.service.dto.RoleTreeDTO;
 import org.springframework.cache.annotation.CacheConfig;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 角色业务层
  *
@@ -16,4 +19,11 @@ import org.springframework.cache.annotation.CacheConfig;
 public interface RoleService extends BaseService<Role, Long> {
 
     RoleTreeDTO getTree();
+
+    /**
+     * 根据项目code查询所有角色
+     * @param levelCode 管理员所在部门层级编码
+     * @return 所在部门的默认角色
+     */
+    List<Map<String,Object>> findLabel(String levelCode);
 }

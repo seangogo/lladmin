@@ -11,10 +11,7 @@ import com.seangogo.base.exception.CheckedException;
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.base.jpa.BaseServiceImpl;
 import com.seangogo.common.enums.ResultEnum;
-import com.seangogo.common.utils.ColUtil;
-import com.seangogo.common.utils.DataResult;
-import com.seangogo.common.utils.PageResult;
-import com.seangogo.common.utils.StringUtils;
+import com.seangogo.common.utils.*;
 import com.seangogo.modules.system.domain.DataBase;
 import com.seangogo.modules.system.domain.FieldInfo;
 import com.seangogo.modules.system.domain.GenConfig;
@@ -356,5 +353,17 @@ public class DataBaseServiceImpl extends BaseServiceImpl<DataBase, Long> impleme
             FileUtil.del(filePath);
             servletOutputStream.close();
         }
+    }
+
+    /**
+     * 删除数据库
+     *
+     * @param id 数据库主键
+     * @return 结果集
+     */
+    @Override
+    public StateResult deleteModel(Long id) {
+        dataBaseRepository.deleteById(id);
+        return StateResult.success();
     }
 }

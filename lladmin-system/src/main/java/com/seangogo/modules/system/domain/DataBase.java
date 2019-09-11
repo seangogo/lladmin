@@ -48,7 +48,7 @@ public class DataBase extends BaseEntity<String> implements Serializable {
     private String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "dataBase")
+    @OneToMany(mappedBy = "dataBase",cascade=CascadeType.REMOVE)
     private Set<TableInfo> tables;
 
     @Override

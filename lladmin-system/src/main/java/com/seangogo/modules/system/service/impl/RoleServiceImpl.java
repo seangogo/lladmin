@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -57,6 +58,17 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
             }
             return roleTree;
         }
+    }
+
+    /**
+     * 根据项目code查询所有角色
+     *
+     * @param levelCode 管理员所在部门层级编码
+     * @return 所在部门的默认角色
+     */
+    @Override
+    public List<Map<String, Object>> findLabel(String levelCode) {
+        return roleRepository.findByDeptLevelCode(levelCode+"%");
     }
 
     /**

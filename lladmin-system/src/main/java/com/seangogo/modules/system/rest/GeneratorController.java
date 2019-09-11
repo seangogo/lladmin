@@ -4,6 +4,7 @@ import com.seangogo.base.exception.CheckedException;
 import com.seangogo.common.enums.ResultEnum;
 import com.seangogo.common.utils.DataResult;
 import com.seangogo.common.utils.PageResult;
+import com.seangogo.common.utils.StateResult;
 import com.seangogo.modules.system.domain.FieldInfo;
 import com.seangogo.modules.system.service.DataBaseService;
 import com.seangogo.modules.system.service.dto.PageQueryDTO;
@@ -53,6 +54,16 @@ public class GeneratorController {
     public DataResult getAllTables(@RequestBody DataBaseDto dto) {
         return dataBaseService.createTable(dto);
     }
+
+    /**
+     * 通过数据库设置获取所有表名称
+     */
+    @DeleteMapping("/database/{id}")
+    public StateResult deleteDataBase(@PathVariable Long id) {
+        return dataBaseService.deleteModel(id);
+    }
+
+
 
     /**
      * 分页查询

@@ -136,7 +136,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 
     @Override
     public PageResult<User> page(Pageable pageable, PageQueryDTO.UserQueryDto dto) {
-        String orgCode = jwtTokenUtil.getOrgCode();
+        String levelCode = jwtTokenUtil.getDeptLevelCode();
         Specification<User> querySpecifi = (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             //  predicates.add(criteriaBuilder.notEqual(root.get("account").get("username").as(String.class), "Sysadmin"));

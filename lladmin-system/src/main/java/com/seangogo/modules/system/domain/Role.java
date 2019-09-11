@@ -1,5 +1,6 @@
 package com.seangogo.modules.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seangogo.base.jpa.BaseEntity;
 import lombok.Data;
@@ -66,9 +67,11 @@ public class Role extends BaseEntity<String> {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    @ManyToMany
-    @JoinTable(name = "system_roles_depts", joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "dept_id", referencedColumnName = "id")})
-    private Set<Dept> depts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id")
+    @JsonBackReference
+    private Dept dept;
+
 
     /**
      * 角色拥有权限的资源集合

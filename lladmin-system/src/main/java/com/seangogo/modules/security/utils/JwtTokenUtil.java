@@ -51,8 +51,8 @@ public class JwtTokenUtil implements Serializable {
         return getObjectFromToken("user_name", String.class);
     }
 
-    public String getOrgCode() {
-        return getObjectFromToken("orgCode", String.class);
+    public String getDeptLevelCode() {
+        return getObjectFromToken("deptLevelCode", String.class);
     }
 
     public Set<String> getRoleCodes() {

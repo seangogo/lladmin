@@ -32,9 +32,7 @@ public class DeptServiceImpl extends BaseServiceImpl<Dept, Long> implements Dept
 
     @Override
     public DataResult getTree(String name) {
-        String orgCode = jwtTokenUtil.getOrgCode();
-        List<Dept> deptList = deptRepository.findByLevelCodeLike(orgCode);
-
-        return null;
+        String levelCode = jwtTokenUtil.getDeptLevelCode();
+        return DataResult.success(deptRepository.findByLevelCodeLike(levelCode+"%"));
     }
 }

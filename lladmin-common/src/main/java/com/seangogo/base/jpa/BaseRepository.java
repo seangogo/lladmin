@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * 基础仓库类
@@ -24,28 +23,25 @@ public interface BaseRepository<T extends BaseEntity, ID extends Serializable>
      *
      * @param id 主键
      */
-    @Override
     @Modifying
     @Query("update #{#entityName} e set e.delFlag=true where e.id=?1")
-    void deleteById(ID id);
+    void softDeleteById(ID id);
 
     /**
      * 通过对象逻辑删除
      *
      * @param t
      */
-    @Override
     @Modifying
     @Query("update #{#entityName} e set e.delFlag=true where e=?1")
-    void delete(T t);
+    void softDelete(T t);
 
     /**
      * 通过对象批量删除
      *
      * @param entitys 对象集合
      */
-    @Override
     @Modifying
     @Query("update #{#entityName} e set e.delFlag=true where e in ?1")
-    void deleteAll(Iterable<? extends T> entitys);
+    void softDeleteAll(Iterable<? extends T> entitys);
 }
