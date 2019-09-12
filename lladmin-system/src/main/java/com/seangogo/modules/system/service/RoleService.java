@@ -4,6 +4,7 @@ import com.seangogo.base.jpa.BaseService;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.domain.User;
 import com.seangogo.modules.system.service.dto.RoleTreeDTO;
+import com.seangogo.modules.system.service.vo.DeptTree;
 import org.springframework.cache.annotation.CacheConfig;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface RoleService extends BaseService<Role, Long> {
      * @param levelCode 管理员所在部门层级编码
      * @return 所在部门的默认角色
      */
-    List<Map<String,Object>> findLabel(String levelCode);
+    DeptTree findLabel(String levelCode);
 }

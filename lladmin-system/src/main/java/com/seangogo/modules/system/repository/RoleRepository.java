@@ -2,11 +2,12 @@ package com.seangogo.modules.system.repository;
 
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.modules.system.domain.Role;
+import com.seangogo.modules.system.service.vo.DeptTree;
+import com.seangogo.modules.system.service.vo.DeptTreeInterface;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,8 +34,8 @@ public interface RoleRepository extends BaseRepository<Role, Long> {
      */
     Role findByCode(String code);
 
-    @Query("select new map(r.name as lable,r.id as value) from Role r where r.dept.levelCode like ?1")
-    List<Map<String,Object>> findByDeptLevelCode(String leaveCode);
+    @Query("select r from Role r where r.dept.levelCode like ?1")
+    List<DeptTreeInterface> findByDeptLevelCode(String leaveCode);
 
     /**
      * 根据层级编码查找

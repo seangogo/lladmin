@@ -7,16 +7,15 @@ import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.repository.RoleRepository;
 import com.seangogo.modules.system.service.RoleService;
 import com.seangogo.modules.system.service.dto.RoleTreeDTO;
+import com.seangogo.modules.system.service.vo.DeptTree;
+import com.seangogo.modules.system.service.vo.DeptTreeInterface;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 角色业务层实现类
@@ -67,8 +66,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
      * @return 所在部门的默认角色
      */
     @Override
-    public List<Map<String, Object>> findLabel(String levelCode) {
-        return roleRepository.findByDeptLevelCode(levelCode+"%");
+    public DeptTree findLabel(String levelCode) {
+        List<DeptTreeInterface> trees=roleRepository.findByDeptLevelCode(levelCode+"%");
+        DeptTreeInterface root=trees.stream().max(Comparator.comparingLong(DeptTreeInterface::getId)).orElseGet(null);
+        return DeptTree.toTree(trees,root);
     }
 
     /**

@@ -7,9 +7,12 @@ import com.seangogo.modules.security.utils.JwtTokenUtil;
 import com.seangogo.modules.system.domain.Dept;
 import com.seangogo.modules.system.repository.DeptRepository;
 import com.seangogo.modules.system.service.DeptService;
+import com.seangogo.modules.system.service.vo.DeptTree;
+import com.seangogo.modules.system.service.vo.DeptTreeInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,6 +36,8 @@ public class DeptServiceImpl extends BaseServiceImpl<Dept, Long> implements Dept
     @Override
     public DataResult getTree(String name) {
         String levelCode = jwtTokenUtil.getDeptLevelCode();
-        return DataResult.success(deptRepository.findByLevelCodeLike(levelCode+"%"));
+        List<DeptTreeInterface> trees=deptRepository.findByLevelCodeLike(levelCode+"%");
+        DeptTreeInterface root=trees.stream().max(Comparator.comparingLong(DeptTreeInterface::getId)).orElseGet(null);
+        return DataResult.success(DeptTree.toTree(trees,root));
     }
 }

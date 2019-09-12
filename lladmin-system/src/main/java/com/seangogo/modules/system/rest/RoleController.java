@@ -4,6 +4,7 @@ import com.seangogo.modules.security.utils.JwtTokenUtil;
 import com.seangogo.modules.system.service.RoleService;
 import com.seangogo.modules.system.service.dto.RoleDTO;
 import com.seangogo.modules.system.service.dto.RoleTreeDTO;
+import com.seangogo.modules.system.service.vo.DeptTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class RoleController {
      */
     @GetMapping(value = "select")
     @PreAuthorize("hasAuthority('user')")
-    public List<Map<String, Object>> select() {
+    public DeptTree select() {
         String levelCode = jwtTokenUtil.getDeptLevelCode();
         return roleService.findLabel(levelCode);
 
