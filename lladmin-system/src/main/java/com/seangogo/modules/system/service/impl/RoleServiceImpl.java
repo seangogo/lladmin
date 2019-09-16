@@ -1,9 +1,11 @@
 package com.seangogo.modules.system.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.seangogo.base.jpa.BaseRepository;
 import com.seangogo.base.jpa.BaseServiceImpl;
 import com.seangogo.modules.security.utils.JwtTokenUtil;
 import com.seangogo.modules.system.domain.Role;
+import com.seangogo.modules.system.repository.DeptRepository;
 import com.seangogo.modules.system.repository.RoleRepository;
 import com.seangogo.modules.system.service.RoleService;
 import com.seangogo.modules.system.service.dto.RoleTreeDTO;
@@ -29,6 +31,9 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private DeptRepository deptRepository;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -70,6 +75,23 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
         List<DeptTreeInterface> trees=roleRepository.findByDeptLevelCode(levelCode+"%");
         DeptTreeInterface root=trees.stream().max(Comparator.comparingLong(DeptTreeInterface::getId)).orElseGet(null);
         return DeptTree.toTree(trees,root);
+    }
+
+    /**
+     * 新增角色
+     * @param role
+     */
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS,rollbackFor = Exception.class)
+    public void create(Role role) {
+        Role parent = find(role.getParentId());
+        Role ex = new Role();
+        ex.setName(role.getName());
+        String code=IdUtil.objectId();
+        role.setCode(code);
+        role.setLevelCode(parent.getLevelCode()+"-"+roleRepository.findSumByParent(parent.getId()));
+        role.setDept(deptRepository.findById(role.getDept().getId()).orElseGet(null));
+        roleRepository.save(role);
     }
 
     /**

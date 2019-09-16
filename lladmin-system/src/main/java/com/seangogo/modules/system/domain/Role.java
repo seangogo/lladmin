@@ -41,7 +41,7 @@ public class Role extends BaseEntity<String> {
     /**
      * 角色编码
      */
-    @Column(length = 20, unique = true, updatable = false)
+    @Column(length = 50, unique = true, updatable = false)
     private String code;
 
     /**

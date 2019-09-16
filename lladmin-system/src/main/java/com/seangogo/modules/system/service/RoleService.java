@@ -27,4 +27,6 @@ public interface RoleService extends BaseService<Role, Long> {
      * @return 所在部门的默认角色
      */
     DeptTree findLabel(String levelCode);
+
+    void create(Role role);
 }

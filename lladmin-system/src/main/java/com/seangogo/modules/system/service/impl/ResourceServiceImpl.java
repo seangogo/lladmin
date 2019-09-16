@@ -47,7 +47,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, Long> impleme
         Set<Role> roles = roleRepository.findByUsers_Id(user.getId());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         roles.forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getLevelCode()));
         });
         List<SimpleGrantedAuthority> resources = roles.stream().flatMap(role -> role.getResources().stream())
                 .map(resource -> new SimpleGrantedAuthority(resource.getCode()))

@@ -49,4 +49,7 @@ public interface RoleRepository extends BaseRepository<Role, Long> {
             type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT r FROM Role r where r in ?1")
     Set<Role> findByRoles(Set<Role> roles);
+
+    @Query("select coalesce(SUM(1),0) from Role r where r.parentId = ?1")
+    int findSumByParent(Long id);
 }
