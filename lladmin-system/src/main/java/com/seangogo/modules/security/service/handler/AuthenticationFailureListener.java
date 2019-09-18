@@ -23,9 +23,6 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
     @Autowired
     protected ConcurrentHashMap<String, Integer> badCredentialsUsers;
 
-    @Autowired
-    private UserRepository userRepository;
-
 
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent authenticationFailureBadCredentialsEvent) {

@@ -34,7 +34,7 @@ public class Dept extends BaseEntity<String> {
      */
     @Column(name = "pid", nullable = false)
     @NotNull
-    private Long pid;
+    private Long parenId;
 
     /**
      * 可用
@@ -55,5 +55,6 @@ public class Dept extends BaseEntity<String> {
 
     public @interface Update {
     }
+
 
 }

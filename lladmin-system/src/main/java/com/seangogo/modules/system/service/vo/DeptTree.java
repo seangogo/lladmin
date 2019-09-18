@@ -1,10 +1,8 @@
 package com.seangogo.modules.system.service.vo;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class DeptTree implements DeptTreeInterface {
 
 
     /** parent */
-    private Long pid;
+    private Long parentId;
 
     /** children */
     private List<DeptTree> children;
@@ -35,8 +33,8 @@ public class DeptTree implements DeptTreeInterface {
     }
 
     @Override
-    public Long getPid(){
-        return pid;
+    public Long getParentId(){
+        return parentId;
     }
 
     @Override
@@ -44,17 +42,17 @@ public class DeptTree implements DeptTreeInterface {
         return name;
     }
 
-    public DeptTree(Long id, String name, Long pid) {
+    public DeptTree(Long id, String name, Long parentId) {
         this.id = id;
         this.name = name;
-        this.pid = pid;
+        this.parentId = parentId;
     }
 
     public static DeptTree toTree(List<DeptTreeInterface> list, DeptTreeInterface parent) {
-        DeptTree dept = new DeptTree(parent.getId(),parent.getName(),parent.getPid());
+        DeptTree dept = new DeptTree(parent.getId(),parent.getName(),parent.getParentId());
         List<DeptTree> children = new ArrayList<>();
         for (DeptTreeInterface tree : list) {
-            if (tree.getPid().equals(parent.getId())) {
+            if (parent.getId().equals(tree.getParentId())) {
                 children.add(toTree(list, tree));
             }
         }

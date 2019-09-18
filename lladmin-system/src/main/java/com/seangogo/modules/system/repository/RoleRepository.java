@@ -1,13 +1,17 @@
 package com.seangogo.modules.system.repository;
 
 import com.seangogo.base.jpa.BaseRepository;
+import com.seangogo.modules.system.domain.Resource;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.service.vo.DeptTree;
 import com.seangogo.modules.system.service.vo.DeptTreeInterface;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -52,4 +56,15 @@ public interface RoleRepository extends BaseRepository<Role, Long> {
 
     @Query("select coalesce(SUM(1),0) from Role r where r.parentId = ?1")
     int findSumByParent(Long id);
+
+    /**
+     * 根据条件删除中间表数据
+     * @param ids 资源
+     * @param id 角色
+     * @return 删除条数
+     */
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE  from system_roles_resources  where resource_id in ?1 and role_id=?2",nativeQuery = true)
+    int deleteforResourceIdsAndRoleId(Set<Long> ids, Long id);
 }

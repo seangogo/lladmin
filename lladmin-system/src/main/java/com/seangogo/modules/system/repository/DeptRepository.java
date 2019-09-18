@@ -21,6 +21,6 @@ public interface DeptRepository extends BaseRepository<Dept, Long> {
      * @param levelCode 层级编码
      * @return 部门集合
      */
-    @Query("select d from Dept d where d.levelCode like ?1")
+    @Query("select d.id as id, d.name as name, d.parenId as parentId from Dept d where d.levelCode like ?1")
     List<DeptTreeInterface> findByLevelCodeLike(String levelCode);
 }

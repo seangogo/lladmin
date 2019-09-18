@@ -26,8 +26,11 @@ public class RoleTreeDTO {
 
 
     /** parent */
-    @JsonProperty("pid")
     private Long parentId;
+
+    private String levelCode;
+
+    private String remark;
 
     /**
      * 子节点

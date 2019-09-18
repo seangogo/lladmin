@@ -1,5 +1,7 @@
 package com.seangogo.modules.system.rest;
 
+import com.seangogo.common.utils.DataResult;
+import com.seangogo.common.utils.StateResult;
 import com.seangogo.modules.security.utils.JwtTokenUtil;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.service.RoleService;
@@ -48,9 +50,9 @@ public class RoleController {
      */
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('role_opt')")
-    public ResponseEntity add(@RequestBody Role role) {
+    public StateResult add(@RequestBody Role role) {
         roleService.create(role);
-        return new ResponseEntity(HttpStatus.OK);
+        return StateResult.success();
     }
 
     /**
@@ -63,6 +65,30 @@ public class RoleController {
     public DeptTree select() {
         String levelCode = jwtTokenUtil.getDeptLevelCode();
         return roleService.findLabel(levelCode);
+    }
+
+    /**
+     * 回显授权过的全选和半选的资源
+     *
+     * @param id      角色Id
+     * @return data
+     */
+    @GetMapping("/resourceIds/{id}")
+    @PreAuthorize("hasAuthority('role_opt')")
+    public Map<String, Object> findRoleIds(@PathVariable Long id) {
+        return roleService.getRoleResources(id);
+    }
+
+    /**
+     * 角色绑定资源
+     *
+     * @return success
+     */
+    @PostMapping(value = "/bindResource")
+    @PreAuthorize("hasAuthority('role_opt')")
+    public StateResult editBindResource(@RequestBody Map<String, String> map){
+        roleService.setRoleResources(Long.parseLong(map.get("roleId")), map.get("resourceIds"));
+        return StateResult.success();
     }
 
 

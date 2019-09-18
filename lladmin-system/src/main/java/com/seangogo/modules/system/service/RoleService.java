@@ -29,4 +29,19 @@ public interface RoleService extends BaseService<Role, Long> {
     DeptTree findLabel(String levelCode);
 
     void create(Role role);
+
+    /**
+     * 回显授权过的全选和半选的资源
+     *
+     * @param id      角色Id
+     * @return data
+     */
+    Map<String,Object> getRoleResources(Long id);
+
+    /**
+     * 角色绑定资源
+     * @param roleId 角色id
+     * @param resourceIds 绑定的资源ids
+     */
+    void setRoleResources(Long roleId, String resourceIds);
 }

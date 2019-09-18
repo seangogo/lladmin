@@ -20,6 +20,8 @@ public enum ResultEnum {
     VERIFICATION_CODE_ERROR("17001003", "验证码错误"),
     PASSWORD_MISTAKE("17001004", "密码错误"),
     MENU_ROOT_NODE_NOT_EXIST("17001005", "菜单根节点不存在"),
+    //role
+    SUPER_CANNOT_UPDATE("1026","超级管理员不可修改"),
 
     FEIGN_CLIENT_ERROR("16001002", "目标服务停止工作"),
     SERVICE_RESPONSE_TIMEOUT("16001001", "请求超时"),

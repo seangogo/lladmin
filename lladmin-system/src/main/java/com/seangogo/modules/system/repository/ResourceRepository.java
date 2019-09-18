@@ -5,6 +5,7 @@ import com.seangogo.modules.system.domain.Resource;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 资源数据库操作类
@@ -29,4 +30,14 @@ public interface ResourceRepository extends BaseRepository<Resource, Long> {
      */
     @Query("select max (r.sort) from Resource r ")
     int findMaxSort();
+
+    /**
+     * 查询所有资源的父资源
+     * @param  ids resource
+     * @return ids parentIds
+     */
+    @Query(value = "SELECT r.parent.id FROM Resource r WHERE r.id IN ?1 ")
+    Set<Long> findPidByIdIn(List<Long> ids);
+
+    List<Resource> findByIdIn(Set<Long> longs);
 }
