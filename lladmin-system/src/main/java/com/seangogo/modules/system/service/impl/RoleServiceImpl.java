@@ -55,7 +55,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
     /**
      * 获取当前账户角色tree
      *
-     * @return
+     * @return 当前账户角色tree
      */
     @Override
     public RoleTreeDTO getTree() {

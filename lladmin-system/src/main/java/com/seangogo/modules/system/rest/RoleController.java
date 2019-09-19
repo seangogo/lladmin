@@ -1,20 +1,15 @@
 package com.seangogo.modules.system.rest;
 
-import com.seangogo.common.utils.DataResult;
 import com.seangogo.common.utils.StateResult;
 import com.seangogo.modules.security.utils.JwtTokenUtil;
 import com.seangogo.modules.system.domain.Role;
 import com.seangogo.modules.system.service.RoleService;
-import com.seangogo.modules.system.service.dto.RoleDTO;
 import com.seangogo.modules.system.service.dto.RoleTreeDTO;
 import com.seangogo.modules.system.service.vo.DeptTree;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +27,7 @@ public class RoleController {
     private JwtTokenUtil jwtTokenUtil;
 
     /**
-     * 获取资源树
+     * 获取角色树
      *
      * @return ResourceInfo
      */
@@ -70,7 +65,7 @@ public class RoleController {
     /**
      * 回显授权过的全选和半选的资源
      *
-     * @param id      角色Id
+     * @param id 角色Id
      * @return data
      */
     @GetMapping("/resourceIds/{id}")
@@ -86,7 +81,7 @@ public class RoleController {
      */
     @PostMapping(value = "/bindResource")
     @PreAuthorize("hasAuthority('role_opt')")
-    public StateResult editBindResource(@RequestBody Map<String, String> map){
+    public StateResult editBindResource(@RequestBody Map<String, String> map) {
         roleService.setRoleResources(Long.parseLong(map.get("roleId")), map.get("resourceIds"));
         return StateResult.success();
     }

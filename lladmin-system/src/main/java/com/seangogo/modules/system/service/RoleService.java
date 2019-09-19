@@ -19,6 +19,11 @@ import java.util.Map;
 @CacheConfig(cacheNames = "role")
 public interface RoleService extends BaseService<Role, Long> {
 
+    /**
+     * 获取角色树
+     *
+     * @return ResourceInfo
+     */
     RoleTreeDTO getTree();
 
     /**
