@@ -188,6 +188,7 @@ CREATE TABLE `system_user` (
   `phone`        varchar(255)        DEFAULT NULL,
   `sex`          int(11)             DEFAULT NULL,
   `username`     varchar(255)        DEFAULT NULL,
+   nickname     varchar(64)  null,
   `dept_id`      bigint(20)          DEFAULT NULL,
   `job_id`       bigint(20)          DEFAULT NULL,
   PRIMARY KEY (`id`),

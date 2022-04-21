@@ -53,7 +53,7 @@ public abstract class BaseEntity<U extends Serializable> implements Serializable
      * 创建时间
      */
     @CreationTimestamp
-    @Column(name = "created_time")
+    @Column(name = "created_date")
     protected Timestamp createdTime;
     /**
      * 修改时间
