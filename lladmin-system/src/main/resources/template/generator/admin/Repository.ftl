@@ -22,20 +22,4 @@ public interface ${className}Repository extends JpaRepository<${className}, ${pk
         </#if>
     </#list>
 </#if>
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof ${className})) {
-            return false;
-        }
-        return super.getId() != null && super.getId().equals(((${className}) obj).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return 2023;
-    }
 }

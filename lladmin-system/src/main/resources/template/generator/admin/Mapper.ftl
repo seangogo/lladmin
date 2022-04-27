@@ -1,6 +1,6 @@
 package ${package}.service.mapper;
 
-import me.zhengjie.mapper.EntityMapper;
+import com.seangogo.base.mapper.EntityMapper;
 import ${package}.domain.${className};
 import ${package}.service.dto.${className}DTO;
 import org.mapstruct.Mapper;
