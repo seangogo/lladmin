@@ -19,7 +19,24 @@ public class NFTPlatform {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    /**
+     * 平台名称
+     */
+    private String name;
 
+    /**
+     * 平台官网
+     */
+    private String url;
 
+    /**
+     * 微信公众号名称
+     */
+    private String wechatName;
+
+    /**
+     * 平台备注
+     */
+    private String remark;
 
 }

@@ -47,14 +47,11 @@ INSERT INTO `system_roles_resources` VALUES ('1', '6');
 INSERT INTO `system_roles_resources` VALUES ('1', '7');
 INSERT INTO `system_roles_resources` VALUES ('1', '8');
 -- --------------------------------------------角色-------------------------------------------------------------------------------------------------------------
-INSERT INTO `system_role` VALUES
-    ('1', 'initialize', '2019-07-19 17:19:03', '', 'Sysadmin', '2019-08-07 09:09:45', '1', 'cjgly', 'cjgly', '超级管理员',
-     null, '超级管理员',0);
+INSERT INTO lladmin.system_role (create_by, created_date, del_flg, update_by, updated_time, version, code, level_code, name, parent_id, remark)
+VALUES (null, '2022-04-26 17:46:36', false, null, null, 0, 'cjgly', 'cjgly', '超级管理员', null, '超级管理员');
 -- --------------------------------------------用户角色关联-------------------------------------------------------------------------------------------------------------
 INSERT INTO `system_users_roles` VALUES ('1', '1');
 -- --------------------------------------------用户-------------------------------------------------------------------------------------------------------------
-INSERT INTO `system_user` VALUES
-    ('1', 'initialize', '2019-07-19 17:19:44', '', null, null, '0', '', null, '949247328@qq.com', '2022-05-29 17:19:59',
-     '', '$2a$10$26JEaJaI2MrcbtuleznwjeHptvMDjqNiRRpk/D78YRAd8SQYaKLQy', '13997956178', '0', 'Sysadmin', '', null,
-     null);
+INSERT INTO lladmin.system_user (create_by, created_date, del_flg, update_by, updated_time, version, active, avatar, email, expire_time, locked, password, phone, sex, username, nickname, dept_id, job_id)
+VALUES ('initialize', '2022-04-26 17:50:23', false, null, null, 0, true, null, '949247328@qq.com', '2027-04-26 17:50:50', false, '$2a$10$26JEaJaI2MrcbtuleznwjeHptvMDjqNiRRpk/D78YRAd8SQYaKLQy', '13997956178', 0, 'Sysadmin', '超级管理员', null, null)；
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------
